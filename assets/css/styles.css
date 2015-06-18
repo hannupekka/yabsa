@@ -1,0 +1,1 @@
+body{background:lightblue}.personList__person .person__name,.personList__person .person__paid{padding-left:0;padding-right:0}.personList__person .person__name{padding-right:5px}.personList__person .person__paid{padding-left:5px}.personList__person+.personList__person{margin-top:10px}#buttons{margin-top:10px}#buttons button+button{margin-left:10px}

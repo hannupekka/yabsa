@@ -1,0 +1,24 @@
+body {
+    background: lightblue;
+}
+
+.personList__person {
+    .person__name,
+    .person__paid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .person__name { padding-right: 5px; }
+    .person__paid { padding-left: 5px; }
+
+    & + & { margin-top: 10px; }
+}
+
+#buttons {
+    margin-top: 10px;
+
+    button + button {
+        margin-left: 10px;
+    }
+}
