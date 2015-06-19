@@ -1,5 +1,9 @@
 body {
-    background: lightblue;
+    font-size: 17px;
+}
+
+.page-header {
+    text-align: center;
 }
 
 .personList__person {
@@ -13,6 +17,16 @@ body {
     .person__paid { padding-left: 5px; }
 
     & + & { margin-top: 10px; }
+}
+
+.paymentList__payment {
+    & + & {
+        margin-top: 20px;
+    }
+
+    div { padding: 0; }
+
+    .transaction__amount { text-align: center; }
 }
 
 #buttons {

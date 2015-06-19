@@ -16,8 +16,8 @@ module.exports = React.createClass({
             });
 
             return (
-                <div key={i}>
-                    <div>who pays: {payment.name}</div>
+                <div key={i} className='paymentList__payment clearfix'>
+                    <div className='paymentList__from'>{payment.name}</div>
                     {personsPayments}
                 </div>
             );
