@@ -19,7 +19,7 @@ module.exports = React.createClass({
                     </div>
                 </div>
                 <div className={buttonClass}>
-                    <div className='btn btn-primary btn-lg' onClick={this.props.onDelete} tabIndex='-1'><i className='fa fa-minus'> {this.props.personCount}</i></div>
+                    <div className='btn btn-primary btn-lg' onClick={this.props.onDelete} tabIndex='-1'><i className='fa fa-minus'></i></div>
                 </div>
             </div>
         );

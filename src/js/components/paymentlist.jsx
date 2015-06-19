@@ -24,9 +24,11 @@ module.exports = React.createClass({
         });
 
         return (
-            <div id='paymentList' className='col-xs-4'>
-                <b>Total: </b> <FormattedNumber value={this.props.total} style="currency" currency="EUR" /> <br />
-                <b>Share: </b> <FormattedNumber value={this.props.share} style="currency" currency="EUR" /> <br />
+            <div id='paymentList' className='col-md-4'>
+                <div className='stats'>
+                    <b>Total: </b> <FormattedNumber value={this.props.total} style="currency" currency="EUR" /> <br />
+                    <b>Share: </b> <FormattedNumber value={this.props.share} style="currency" currency="EUR" /> <br />
+                </div>
                 {payments}
             </div>
         );

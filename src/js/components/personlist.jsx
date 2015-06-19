@@ -44,7 +44,7 @@ module.exports = React.createClass({
         }.bind(this));
 
         return (
-            <form id='personList' className='col-xs-8'>
+            <form id='personList' className='col-md-8'>
                 {persons}
                 <div id='buttons' className='col-xs-12'>
                     <button className='btn btn-lg btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i> Add person</button>
