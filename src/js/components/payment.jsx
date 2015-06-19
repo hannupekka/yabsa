@@ -7,7 +7,7 @@ var FormattedNumber = ReactIntl.FormattedNumber;
 module.exports = React.createClass({
     render: function() {
         return (
-            <div className='paymentList__transaction bg-success clearfix col-md-12'>
+            <div className='paymentList__transaction clearfix col-md-12'>
                 <div className='col-xs-3 col-md-4 transaction__amount'>
                     <FormattedNumber value={this.props.amount} style="currency" currency="EUR" />
                 </div>

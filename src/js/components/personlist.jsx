@@ -47,8 +47,8 @@ module.exports = React.createClass({
             <form id='personList' className='col-md-8'>
                 {persons}
                 <div id='buttons' className='col-xs-12'>
-                    <button className='btn btn-lg btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i> Add person</button>
-                    <button className='btn btn-lg btn-primary' onClick={this.shareTotal}><i className='fa fa-calculator'></i> Share total</button>
+                    <button className='btn btn-lg btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i><span className='hidden-xs'> Add person</span></button>
+                    <button className='btn btn-lg btn-primary' onClick={this.shareTotal}><i className='fa fa-calculator'></i><span className='hidden-xs'> Share total</span></button>
                 </div>
             </form>
         );
