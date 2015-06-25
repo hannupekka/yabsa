@@ -3,6 +3,12 @@ var _each = require('lodash.foreach');
 var _reduce = require('lodash.reduce');
 var _find = require('lodash.find');
 var _remove = require('lodash.remove');
+
+
+var round = function(num) {
+    return +(Math.round(num + "e+2")  + "e-2");
+};
+
 /**
  * @param {Array} Array of object with keys name and paid.
  * @return {Array} Array of objects with payment details.
@@ -21,7 +27,7 @@ module.exports = function(data) {
     // Add ID for each person.
     _each(sorted, function(person, idx) {
        person.id = idx;
-       person.paid = Number(person.paid * 100);
+       person.paid = Math.round(Number(person.paid * 100));
     });
 
     // Calculate total amount.
@@ -38,7 +44,7 @@ module.exports = function(data) {
     // Loop through persons.
     _each(sorted, function(person) {
         // Calcaulate how much person still has to pay (or receive, if the amount is negative).
-        person.left = share - person.paid;
+        person.left = Math.round(share - person.paid);
 
         var target;
 
@@ -69,12 +75,8 @@ module.exports = function(data) {
                     amount: Number(amount / 100)
                 });
             } else {
-                // Skip if target not found.
-                continue;
-            }
-
-            // If there's one cent left to pay, get rid of it :)
-            if (person.left === 1) {
+                // Could not find any person who still shoud receive money.
+                // This happens when total won't divide equally.
                 person.left = 0;
             }
         }

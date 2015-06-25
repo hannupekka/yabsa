@@ -1,15 +1,13 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var Person = require('./person.jsx');
-var person = require('../person.js');
 
 module.exports = React.createClass({
-    person: person,
     getInitialState: function() {
         return {persons: [
             {
                 'name': 'bob',
-                'paid': 10
+                'paid': '10,5'
             }, {
                 'name': 'bill',
                 'paid': 20
@@ -19,6 +17,10 @@ module.exports = React.createClass({
             }]};
     },
     removePerson: function(idx) {
+        if (this.state.persons.length === 1) {
+            return;
+        }
+
         this.setState({
             persons: React.addons.update(this.state.persons, {$splice: [[idx, 1]]})
         });
@@ -30,7 +32,7 @@ module.exports = React.createClass({
     },
     addPerson: function(event) {
         event.preventDefault();
-        this.setState({persons: this.state.persons.concat([this.person])});
+        this.setState({persons: this.state.persons.concat([{name: 'John Doe', paid: 0}])});
     },
     shareTotal: function(event) {
         event.preventDefault();
@@ -46,6 +48,7 @@ module.exports = React.createClass({
         return (
             <form id='personList' className='col-md-8'>
                 {persons}
+                <div id='help' className='col-xs-12'>Protip: you can enter multiple amounts for person by separating them by space!</div>
                 <div id='buttons' className='col-xs-12'>
                     <button className='btn btn-lg btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i><span className='hidden-xs'> Add person</span></button>
                     <button className='btn btn-lg btn-primary' onClick={this.shareTotal}><i className='fa fa-calculator'></i><span className='hidden-xs'> Share total</span></button>

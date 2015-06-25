@@ -10,12 +10,12 @@ module.exports = React.createClass({
         return (
             <div className='personList__person clearfix'>
                 <div className='person__name col-xs-4'>
-                    <input type='text' className='form-control input-lg' value={this.props.name} onChange={this.handleChange.bind(this, 'name')} autoFocus />
+                    <input type='text' className='form-control input-lg' placeholder={this.props.name} onChange={this.handleChange.bind(this, 'name')} autoFocus />
                 </div>
                 <div className='person__paid col-xs-6'>
                     <div className='input-group'>
-                    <div className="input-group-addon">€</div>
-                    <input type='number' className='form-control input-lg' value={this.props.paid} onChange={this.handleChange.bind(this, 'paid')} />
+                        <div className="input-group-addon">€</div>
+                        <input type='text' className='form-control input-lg' placeholder={this.props.paid} onChange={this.handleChange.bind(this, 'paid')} />
                     </div>
                 </div>
                 <div className={buttonClass}>

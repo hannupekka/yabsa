@@ -13,11 +13,15 @@ module.exports = React.createClass({
         var i = 0;
         var personCount = persons.length;
         var person;
+        var paid;
         for (; i < personCount; i++) {
             person = persons[i];
+            paid = typeof person.paid === 'string' ? person.paid.split(' ').reduce(function(prev, current) {
+                return Number(prev) + Number(current.replace(',', '.'));
+            }, 0) : person.paid;
             data.push({
                 name: person.name,
-                paid: Number(person.paid)
+                paid: Number(paid)
             });
         }
         var results = shareBill(data);
