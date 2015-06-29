@@ -6,14 +6,8 @@ module.exports = React.createClass({
     getInitialState: function() {
         return {persons: [
             {
-                'name': 'bob',
-                'paid': '10,5'
-            }, {
-                'name': 'bill',
-                'paid': 20
-            }, {
-                'name': 'joe',
-                'paid': 30
+                'name': 'John Doe',
+                'paid': '0'
             }]};
     },
     removePerson: function(idx) {

@@ -1,19 +1,20 @@
 {
-  "name": "sorter",
+  "name": "splitthebill",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Splits expenses between people.",
   "scripts": {},
-  "author": "",
-  "license": "ISC",
+  "author": "Hannu-Pekka Heinajarvi <hannupekka@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hannupekka/splitthebill.git"
+  },
   "dependencies": {},
   "devDependencies": {
     "browserify": "^10.2.4",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-less": "^3.0.3",
-    "gulp-streamify": "0.0.5",
-    "gulp-uglify": "^1.2.0",
     "gulp-uglifycss": "^1.0.4",
     "lodash.find": "^3.2.1",
     "lodash.foreach": "^3.0.3",
@@ -24,6 +25,7 @@
     "react": "^0.13.3",
     "react-intl": "^1.2.0",
     "reactify": "^1.1.1",
+    "uglifyify": "^3.0.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.2"
   }

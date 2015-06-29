@@ -16,6 +16,7 @@ module.exports = React.createClass({
         var paid;
         for (; i < personCount; i++) {
             person = persons[i];
+            // Sum amounts if multiple given. Also replace commas.
             paid = typeof person.paid === 'string' ? person.paid.split(' ').reduce(function(prev, current) {
                 return Number(prev) + Number(current.replace(',', '.'));
             }, 0) : person.paid;

@@ -7,6 +7,7 @@ var FormattedNumber = ReactIntl.FormattedNumber;
 var _map = require('lodash.map');
 
 module.exports = React.createClass({
+    mixins: [IntlMixin],
     render: function() {
         var payments = _map(this.props.payments, function(payment, i) {
             var personsPayments = payment.to.map(function(p,j) {

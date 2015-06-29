@@ -5,6 +5,7 @@ var IntlMixin = ReactIntl.IntlMixin;
 var FormattedNumber = ReactIntl.FormattedNumber;
 
 module.exports = React.createClass({
+    mixins: [IntlMixin],
     render: function() {
         return (
             <div className='paymentList__transaction clearfix col-md-12'>
