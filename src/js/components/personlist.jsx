@@ -32,10 +32,14 @@ module.exports = React.createClass({
         event.preventDefault();
         this.props.onShareTotal(this.state.persons);
     },
+    toggleSettings: function(event) {
+        event.preventDefault();
+        this.props.onToggleSettings();
+    },
     render: function() {
         var persons = this.state.persons.map(function(person, i) {
             return (
-                <Person key={i} idx={i} name={person.name} paid={person.paid} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} />
+                <Person key={i} idx={i} name={person.name} paid={person.paid} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} currency={this.props.currency} />
             );
         }.bind(this));
 
@@ -46,6 +50,7 @@ module.exports = React.createClass({
                 <div id='buttons' className='col-xs-12'>
                     <button className='btn btn-lg btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i><span className='hidden-xs'> Add person</span></button>
                     <button className='btn btn-lg btn-primary' onClick={this.shareTotal}><i className='fa fa-calculator'></i><span className='hidden-xs'> Share total</span></button>
+                    <button className='btn btn-lg btn-primary settings' onClick={this.toggleSettings}><i className='fa fa-cog'></i><span className='hidden-xs'> Settings</span></button>
                 </div>
             </form>
         );

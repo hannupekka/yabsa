@@ -14,8 +14,8 @@ module.exports = React.createClass({
                 </div>
                 <div className='person__paid col-xs-6'>
                     <div className='input-group'>
-                        <div className="input-group-addon">€</div>
                         <input type='text' className='form-control input-lg' placeholder={this.props.paid} onChange={this.handleChange.bind(this, 'paid')} />
+                        <div className="input-group-addon">{this.props.currency}</div>
                     </div>
                 </div>
                 <div className={buttonClass}>

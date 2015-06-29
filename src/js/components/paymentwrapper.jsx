@@ -2,11 +2,18 @@
 var React = require('react');
 var PersonList = require('./personlist.jsx');
 var PaymentList = require('./paymentlist.jsx');
+var Settings = require('./settings.jsx');
 var shareBill = require('../functions.js');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {payments: {}, total: 0, share: 0};
+        return {payments: {}, total: 0, share: 0, currency: 'EUR', showSettings: false};
+    },
+    changeCurrency: function(currency) {
+      this.setState({currency: currency});
+    },
+    toggleSettings: function() {
+      this.setState({showSettings: !this.state.showSettings});
     },
     shareTotal: function(persons) {
         var data = [];
@@ -31,8 +38,9 @@ module.exports = React.createClass({
     render: function() {
         return (
             <div>
-                <PersonList onShareTotal={this.shareTotal} />
-                <PaymentList payments={this.state.payments} total={this.state.total} share={this.state.share} />
+                <Settings onCurrencyChange={this.changeCurrency} showSettings={this.state.showSettings} />
+                <PersonList onShareTotal={this.shareTotal} currency={this.state.currency} onToggleSettings={this.toggleSettings} />
+                <PaymentList payments={this.state.payments} total={this.state.total} share={this.state.share} currency={this.state.currency} />
             </div>
         );
     }
