@@ -5,12 +5,7 @@ describe('Empty data', function() {
     it('should return empty results', function() {
         var data = [];
         var results = shareBill(data);
-        expect(Object.keys(results)).to.have.length(3);
-        expect(results.payments).to.exist;
-        expect(results.payments).to.be.empty;
-        expect(results.total).to.exist;
-        expect(results.total).to.equal(0);
-        expect(results.share).to.exist;
-        expect(results.share).to.equal(0);
+        var expected = {payments: {}, total: 0, share: 0};
+        expect(results).to.deep.equal(expected);
     });
 });
