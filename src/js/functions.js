@@ -36,7 +36,7 @@ module.exports = function(data) {
     }, 0);
 
     // Calculate share per person.
-    share = Math.round(Number(total / sorted.length));
+    share = sorted.length > 0 ? Math.round(Number(total / sorted.length)) : 0;
 
     // Object for storing results.
     payments = {};

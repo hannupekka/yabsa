@@ -7,6 +7,7 @@ var less = require('gulp-less');
 var path = require('path');
 var autoprefixer = require('gulp-autoprefixer');
 var uglifycss = require('gulp-uglifycss');
+var mocha = require('gulp-mocha');
 
 gulp.task('less', function () {
   return gulp.src('./src/less/styles.less')
@@ -65,5 +66,10 @@ gulp.task('lesswatch', function () {
     gulp.watch('./src/less/styles.less', ['less']);
 });
 
+gulp.task('test', function () {
+    return gulp.src('./test/test.js', {read: false})
+        .pipe(mocha({reporter: 'spec'}));
+});
+
 gulp.task('default', ['browserify', 'lesswatch']);
-gulp.task('build', ['less', 'js']);
+gulp.task('build', ['test', 'less', 'js']);
