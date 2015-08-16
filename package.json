@@ -9,7 +9,10 @@
     "type": "git",
     "url": "https://github.com/hannupekka/splitthebill.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "hapi": "^9.0.2",
+    "joi": "^6.6.1"
+  },
   "devDependencies": {
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
