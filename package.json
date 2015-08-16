@@ -10,8 +10,11 @@
     "url": "https://github.com/hannupekka/splitthebill.git"
   },
   "dependencies": {
+    "guid": "0.0.12",
     "hapi": "^9.0.2",
-    "joi": "^6.6.1"
+    "joi": "^6.6.1",
+    "lodash.merge": "^3.3.2",
+    "mongoose": "^4.1.2"
   },
   "devDependencies": {
     "browserify": "^10.2.4",
