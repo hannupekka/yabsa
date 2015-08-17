@@ -4,7 +4,6 @@ var _reduce = require('lodash.reduce');
 var _find = require('lodash.find');
 var _remove = require('lodash.remove');
 
-
 var round = function(num) {
     return +(Math.round(num + "e+2")  + "e-2");
 };

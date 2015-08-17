@@ -5,7 +5,7 @@ var Bill = require('../models/bill.js');
 // Schema for payments.
 var schema = Joi.array().items(Joi.object().keys({
     name: Joi.string().required(),
-    payments: Joi.string().required()
+    paid: Joi.string().required()
 }));
 
 // API base path.
@@ -37,7 +37,7 @@ module.exports = [{
         // Handler.
         handler: function (request, reply) {
             // Create new bill.
-            Bill.create({payments: request.payload.data}, function(error, bill) {
+            Bill.create({paid: request.payload.data}, function(error, bill) {
                 // Return error code.
                 if(error) {
                     reply(error).code(500);
@@ -83,7 +83,7 @@ module.exports = [{
                 }
 
                 // Update found bill payments.
-                bill.payments = request.payload.data;
+                bill.paid = request.payload.data;
 
                 // Save updated bill.
                 bill.save(function (error) {
@@ -172,7 +172,7 @@ module.exports = [{
                 }
 
                 // Reply with payment data.
-                reply({data: bill.payments}).code(200);
+                reply({data: bill.paid}).code(200);
             });
         }
     }

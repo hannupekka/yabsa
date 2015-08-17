@@ -9,6 +9,21 @@ var autoprefixer = require('gulp-autoprefixer');
 var uglifycss = require('gulp-uglifycss');
 var mocha = require('gulp-mocha');
 
+// External dependencies.
+var libs = [
+    'react',
+    'react/addons',
+    'react-router',
+    'lodash.map',
+    'lodash.sortby',
+    'lodash.foreach',
+    'lodash.reduce',
+    'lodash.find',
+    'lodash.remove',
+    'react-intl',
+    'httpinvoke'
+];
+
 gulp.task('less', function () {
   return gulp.src('./src/less/styles.less')
     .pipe(less({
@@ -19,24 +34,44 @@ gulp.task('less', function () {
         cascade: false
     }))
     .pipe(uglifycss())
-    .pipe(gulp.dest('./assets/css'));
+    .pipe(gulp.dest('./public/assets/css'));
 });
 
-gulp.task('js', function() {
+// Task to build vendor JS files.
+gulp.task('vendor', function() {
+    var bundler = browserify({
+        debug: false,
+        require: libs
+    });
+
+    bundler.transform({
+        global: true,
+        sourcemap: false
+    }, 'uglifyify');
+
+    bundler
+        .bundle()
+        .pipe(source('vendor.js'))
+        .pipe(gulp.dest('./public/assets/js'));
+});
+
+gulp.task('app', function() {
     var bundler = browserify({
         entries: ['./src/js/app.js'],
         transform: [reactify],
         debug: false
     });
 
+    bundler.external(libs);
+
     bundler.transform({
-      global: true
+        global: true
     }, 'uglifyify');
 
     bundler
     .bundle()
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./assets/js/'));
+    .pipe(gulp.dest('./public/assets/js/'));
 
 });
 
@@ -47,6 +82,8 @@ gulp.task('browserify', function() {
         debug: true
     });
 
+    bundler.external(libs);
+
     var watcher = watchify(bundler);
 
     return watcher
@@ -54,12 +91,12 @@ gulp.task('browserify', function() {
         var updateStart = Date.now();
         watcher.bundle()
         .pipe(source('bundle.js'))
-        .pipe(gulp.dest('./assets/js/'));
+        .pipe(gulp.dest('./public/assets/js/'));
         console.log('Updated!', (Date.now() - updateStart) + 'ms');
     })
     .bundle()
     .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./assets/js/'));
+    .pipe(gulp.dest('./public/assets/js/'));
 });
 
 gulp.task('lesswatch', function () {
@@ -72,4 +109,4 @@ gulp.task('test', function () {
 });
 
 gulp.task('default', ['browserify', 'lesswatch']);
-gulp.task('build', ['test', 'less', 'js']);
+gulp.task('build', ['test', 'less', 'vendor', 'app']);

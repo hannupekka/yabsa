@@ -9,7 +9,6 @@ var routes = (
     </Route>
 );
 
-//React.render(React.createElement(PaymentWrapper), document.getElementById('wrapper'));
 Router.run(routes, function (Handler) {
   React.render(<Handler/>, document.getElementById('wrapper'));
 });

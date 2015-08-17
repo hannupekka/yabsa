@@ -1,14 +1,24 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var Person = require('./person.jsx');
+var httpinvoke = require('httpinvoke');
 
 module.exports = React.createClass({
+    componentDidMount: function() {
+        var baseUrl = window.location.origin;
+        if (this.props.bid) {
+            httpinvoke(baseUrl + '/api/v1/bill/' + this.props.bid, 'GET', function(error, body, statusCode) {
+                var data = JSON.parse(body);
+                this.setState({persons: data.data});
+            }.bind(this));
+        }
+    },
     getInitialState: function() {
-        return {persons: [
-            {
-                'name': 'John Doe',
-                'paid': '0'
-            }]};
+        var persons = this.props.bid ? [] : [{
+            'name': 'John Doe',
+            'paid': '0'
+        }];
+        return {persons: persons};
     },
     removePerson: function(idx) {
         if (this.state.persons.length === 1) {
@@ -39,7 +49,7 @@ module.exports = React.createClass({
     render: function() {
         var persons = this.state.persons.map(function(person, i) {
             return (
-                <Person key={i} idx={i} name={person.name} paid={person.paid} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} currency={this.props.currency} />
+                <Person key={i} idx={i} name={person.name} paid={person.paid} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} currency={this.props.currency} bid={this.props.bid} />
             );
         }.bind(this));
 

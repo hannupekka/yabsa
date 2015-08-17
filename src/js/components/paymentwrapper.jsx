@@ -11,7 +11,7 @@ module.exports = React.createClass({
         router: React.PropTypes.func
     },
     getInitialState: function() {
-        return {payments: {}, total: 0, share: 0, currency: 'EUR', showSettings: false};
+        return {payments: {}, total: 0, share: 0, currency: 'EUR', showSettings: false, bid: this.context.router.getCurrentParams().bid || false};
     },
     changeCurrency: function(currency) {
       this.setState({currency: currency});
@@ -41,12 +41,10 @@ module.exports = React.createClass({
     },
     render: function() {
         var router = this.context.router;
-        var bid = router.getCurrentParams().bid;
         return (
             <div>
-                {bid}
                 <Settings onCurrencyChange={this.changeCurrency} showSettings={this.state.showSettings} />
-                <PersonList onShareTotal={this.shareTotal} currency={this.state.currency} onToggleSettings={this.toggleSettings} />
+                <PersonList onShareTotal={this.shareTotal} currency={this.state.currency} onToggleSettings={this.toggleSettings} bid={this.state.bid}/>
                 <PaymentList payments={this.state.payments} total={this.state.total} share={this.state.share} currency={this.state.currency} />
             </div>
         );

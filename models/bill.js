@@ -12,7 +12,7 @@ var BillSchema = new Schema({
         default: Guid.raw(),
         index: true
     },
-    payments: {
+    paid: {
         type: Array,
         required: true
     }

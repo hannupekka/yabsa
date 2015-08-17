@@ -12,6 +12,7 @@
   "dependencies": {
     "guid": "0.0.12",
     "hapi": "^9.0.2",
+    "httpinvoke": "^1.4.0",
     "inert": "^3.0.1",
     "joi": "^6.6.1",
     "mongoose": "^4.1.2",
