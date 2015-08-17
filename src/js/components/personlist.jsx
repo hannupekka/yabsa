@@ -1,15 +1,16 @@
 /** @jsx React.DOM */
 var React = require('react/addons');
 var Person = require('./person.jsx');
-var httpinvoke = require('httpinvoke');
+var request = require('browser-request');
 
 module.exports = React.createClass({
     componentDidMount: function() {
         var baseUrl = window.location.origin;
         if (this.props.bid) {
-            httpinvoke(baseUrl + '/api/v1/bill/' + this.props.bid, 'GET', function(error, body, statusCode) {
+            request(baseUrl + '/api/v1/bill/' + this.props.bid, function(error, response, body) {
                 var data = JSON.parse(body);
                 this.setState({persons: data.data});
+                this.props.onCurrencyChange(data.currency);
             }.bind(this));
         }
     },
@@ -18,7 +19,8 @@ module.exports = React.createClass({
             'name': 'John Doe',
             'paid': '0'
         }];
-        return {persons: persons};
+        var currency = this.props.bid ? this.props.currency : 'EUR';
+        return {persons: persons, currency: currency};
     },
     removePerson: function(idx) {
         if (this.state.persons.length === 1) {

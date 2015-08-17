@@ -32,14 +32,15 @@ module.exports = [{
             // Validate payload against schema.
             payload: {
                 data: schema,
+                currency: Joi.string().required()
             }
         },
         // Handler.
         handler: function (request, reply) {
             // Create new bill.
-            Bill.create({paid: request.payload.data}, function(error, bill) {
+            Bill.create({paid: request.payload.data, currency: request.payload.currency}, function(error, bill) {
                 // Return error code.
-                if(error) {
+                if (error) {
                     reply(error).code(500);
                     return;
                 }
@@ -62,6 +63,7 @@ module.exports = [{
             // Validate payload against schema.
             payload: {
                 data: schema,
+                currency: Joi.string().required()
             }
         },
         // Handler.
@@ -71,24 +73,25 @@ module.exports = [{
             // Find bill with matching bid.
             Bill.findOne({bid: bid}, function (error, bill) {
                 // No matching bill found.
-                if(!bill) {
+                if (!bill) {
                     reply(error).code(404);
                     return;
                 }
 
                 // Return error code.
-                if(error) {
+                if (error) {
                     reply(error).code(500);
                     return;
                 }
 
                 // Update found bill payments.
                 bill.paid = request.payload.data;
+                bill.currency = request.payload.currency;
 
                 // Save updated bill.
                 bill.save(function (error) {
                     // Return error code.
-                    if(error) {
+                    if (error) {
                         reply(error).code(500);
                         return;
                     }
@@ -117,13 +120,13 @@ module.exports = [{
             // Find bill with matching bid.
             Bill.findOne({bid: bid}, function (error, bill) {
                 // No matching bill found.
-                if(!bill) {
+                if (!bill) {
                     reply(error).code(404);
                     return;
                 }
 
                 // Return error code.
-                if(error) {
+                if (error) {
                     reply(error).code(500);
                     return;
                 }
@@ -131,7 +134,7 @@ module.exports = [{
                 // Remove bill.
                 bill.remove(function(error) {
                     // Return error code.
-                    if(error) {
+                    if (error) {
                         reply(error).code(500);
                         return;
                     }
@@ -160,19 +163,19 @@ module.exports = [{
             // Find bill with matching bid.
             Bill.findOne({bid: bid}, function (error, bill) {
                 // No matching bill found.
-                if(!bill) {
+                if (!bill) {
                     reply(error).code(404);
                     return;
                 }
 
                 // Return error code.
-                if(error) {
+                if (error) {
                     reply(error).code(500);
                     return;
                 }
 
                 // Reply with payment data.
-                reply({data: bill.paid}).code(200);
+                reply({data: bill.paid, currency: bill.currency}).code(200);
             });
         }
     }

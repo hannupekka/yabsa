@@ -15,6 +15,10 @@ var BillSchema = new Schema({
     paid: {
         type: Array,
         required: true
+    },
+    currency: {
+        type: String,
+        required: true
     }
 });
 

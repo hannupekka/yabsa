@@ -11,7 +11,7 @@ module.exports = React.createClass({
             <form id='settings' className={settingsClassName}>
                 <div className='form-group'>
                     <label htmlFor='currency'>Currency</label>
-                    <select id='currency' className='form-control input-lg' onChange={this.handleCurrencyChange}>
+                    <select id='currency' className='form-control input-lg' value={this.props.currency} onChange={this.handleCurrencyChange}>
                         <option value='EUR'>EUR</option>
                         <option value='USD'>USD</option>
                     </select>

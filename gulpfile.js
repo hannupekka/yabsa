@@ -21,7 +21,7 @@ var libs = [
     'lodash.find',
     'lodash.remove',
     'react-intl',
-    'httpinvoke'
+    'browser-request'
 ];
 
 gulp.task('less', function () {
