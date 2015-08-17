@@ -12,8 +12,10 @@
   "dependencies": {
     "guid": "0.0.12",
     "hapi": "^9.0.2",
+    "inert": "^3.0.1",
     "joi": "^6.6.1",
-    "mongoose": "^4.1.2"
+    "mongoose": "^4.1.2",
+    "react-router": "^0.13.3"
   },
   "devDependencies": {
     "browserify": "^10.2.4",

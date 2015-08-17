@@ -8,11 +8,25 @@ var schema = Joi.array().items(Joi.object().keys({
     payments: Joi.string().required()
 }));
 
+// API base path.
+var BASE_PATH = '/api/v1'
+
 // Routes.
 module.exports = [{
+    // Serving index.html.
+    method: 'GET',
+    path: '/{param*}',
+    handler: {
+        directory: {
+            path: 'public/',
+            redirectToSlash: true,
+            index: true
+        }
+    }
+}, {
     // Saving new.
     method: 'POST',
-    path: '/bill',
+    path: BASE_PATH + '/bill',
     config: {
         validate: {
             // Validate payload against schema.
@@ -38,7 +52,7 @@ module.exports = [{
 }, {
     // Updating existing one.
     method: 'PUT',
-    path: '/bill/{bid}',
+    path: BASE_PATH + '/bill/{bid}',
     config: {
         validate: {
             // Validate query param.
@@ -88,7 +102,7 @@ module.exports = [{
 }, {
     // Deleting one.
     method: 'DELETE',
-    path: '/bill/{bid}',
+    path: BASE_PATH + '/bill/{bid}',
     config: {
         validate: {
             // Validate query param.
@@ -131,7 +145,7 @@ module.exports = [{
 }, {
     // Get one.
     method: 'GET',
-    path: '/bill/{bid}',
+    path: BASE_PATH + '/bill/{bid}',
     config: {
         validate: {
             // Validate query param.

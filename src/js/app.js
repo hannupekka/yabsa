@@ -1,4 +1,15 @@
 var React = require('react');
+var Router = require('react-router');
+var Route = Router.Route;
 var PaymentWrapper = require('./components/paymentwrapper.jsx');
 
-React.render(React.createElement(PaymentWrapper), document.getElementById('wrapper'));
+var routes = (
+    <Route handler={PaymentWrapper}>
+        <Route name="bill" path="/:bid" handler={PaymentWrapper}/>
+    </Route>
+);
+
+//React.render(React.createElement(PaymentWrapper), document.getElementById('wrapper'));
+Router.run(routes, function (Handler) {
+  React.render(<Handler/>, document.getElementById('wrapper'));
+});
