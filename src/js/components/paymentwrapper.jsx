@@ -20,6 +20,12 @@ module.exports = React.createClass({
     toggleSettings: function() {
       this.setState({showSettings: !this.state.showSettings});
     },
+    deleteBill: function() {
+        var baseUrl = window.location.origin;
+        request({url: baseUrl + '/api/v1/bill/' + this.state.bid, method: 'DELETE'}, function(error, response, body) {
+            window.location = baseUrl;
+        }.bind(this));
+    },
     shareTotal: function(persons) {
         var data = [];
         var i = 0;
@@ -47,7 +53,7 @@ module.exports = React.createClass({
 
         request({url: baseUrl + '/api/v1' + url, method: method, body: {data: persons, currency: this.state.currency}, json: true}, function(error, response, body) {
             if (!this.state.bid) {
-                bid = JSON.parse(body).bid;
+                bid = body.bid;
                 router.transitionTo('bill', {bid: bid});
             }
 
@@ -59,7 +65,7 @@ module.exports = React.createClass({
         return (
             <div>
                 <Settings onCurrencyChange={this.changeCurrency} currency={this.state.currency} showSettings={this.state.showSettings} />
-                <PersonList onShareTotal={this.shareTotal} onCurrencyChange={this.changeCurrency} currency={this.state.currency} onToggleSettings={this.toggleSettings} bid={this.state.bid} />
+                <PersonList onShareTotal={this.shareTotal} onCurrencyChange={this.changeCurrency} onDeleteBill={this.deleteBill} currency={this.state.currency} onToggleSettings={this.toggleSettings} bid={this.state.bid} />
                 <PaymentList payments={this.state.payments} total={this.state.total} share={this.state.share} currency={this.state.currency} />
             </div>
         );

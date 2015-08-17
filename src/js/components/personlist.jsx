@@ -48,12 +48,24 @@ module.exports = React.createClass({
         event.preventDefault();
         this.props.onToggleSettings();
     },
+    deleteBill: function(event) {
+        event.preventDefault();
+        this.props.onDeleteBill();
+    },
     render: function() {
         var persons = this.state.persons.map(function(person, i) {
             return (
                 <Person key={i} idx={i} name={person.name} paid={person.paid} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} currency={this.props.currency} bid={this.props.bid} />
             );
         }.bind(this));
+
+        var deleteButton = function() {
+            if (this.props.bid) {
+                return (
+                    <button className='btn btn-lg btn-primary' onClick={this.deleteBill}><i className='fa fa-trash-o'></i><span className='hidden-xs'> Delete</span></button>
+                );
+            }
+        }.bind(this);
 
         return (
             <form id='personList' className='col-md-8'>
@@ -63,6 +75,7 @@ module.exports = React.createClass({
                     <button className='btn btn-lg btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i><span className='hidden-xs'> Add person</span></button>
                     <button className='btn btn-lg btn-primary settings' onClick={this.toggleSettings}><i className='fa fa-cog'></i><span className='hidden-xs'> Settings</span></button>
                     <button className='btn btn-lg btn-primary' onClick={this.shareTotal}><i className='fa fa-calculator'></i><span className='hidden-xs'> Share total</span></button>
+                    {deleteButton()}
                 </div>
             </form>
         );

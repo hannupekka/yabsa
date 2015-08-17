@@ -5,6 +5,7 @@ var PaymentWrapper = require('./components/paymentwrapper.jsx');
 
 var routes = (
     <Route handler={PaymentWrapper}>
+        <Route name="index" path="/" handler={PaymentWrapper}/>
         <Route name="bill" path="/:bid" handler={PaymentWrapper}/>
     </Route>
 );
