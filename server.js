@@ -1,11 +1,11 @@
 // Require modules.
 var Hapi = require('hapi');
-var routes = require('./routes/routes.js');
+var routes = require('./server/routes/routes.js');
 var mongoose = require('mongoose');
 var Inert = require('inert');
 
 // Database configs and connection
-var config = require('./config/db.js');
+var config = require('./server/config/db.js');
 mongoose.connect(config.mongo.uri, config.mongo.options);
 
 // Create server.
