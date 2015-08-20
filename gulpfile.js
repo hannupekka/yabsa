@@ -21,11 +21,12 @@ var libs = [
     'lodash.find',
     'lodash.remove',
     'react-intl',
-    'browser-request'
+    'browser-request',
+    'reflux'
 ];
 
 gulp.task('less', function () {
-  return gulp.src('./src/less/styles.less')
+  return gulp.src('./client/src/less/styles.less')
     .pipe(less({
         paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
@@ -57,7 +58,7 @@ gulp.task('vendor', function() {
 
 gulp.task('app', function() {
     var bundler = browserify({
-        entries: ['./src/js/app.js'],
+        entries: ['./client/src/js/app.js'],
         transform: [reactify],
         debug: false
     });
@@ -77,7 +78,7 @@ gulp.task('app', function() {
 
 gulp.task('browserify', function() {
     var bundler = browserify({
-        entries: ['./src/js/app.js'],
+        entries: ['./client/src/js/app.js'],
         transform: [reactify],
         debug: true
     });
@@ -100,7 +101,7 @@ gulp.task('browserify', function() {
 });
 
 gulp.task('lesswatch', function () {
-    gulp.watch('./src/less/styles.less', ['less']);
+    gulp.watch('./client/src/less/styles.less', ['less']);
 });
 
 gulp.task('test', function () {
