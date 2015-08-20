@@ -1,4 +1,4 @@
-var shareBill = require('../src/js/functions.js');
+var shareBill = require('../client/src/js/functions.js');
 var expect = require('chai').expect;
 
 describe('Empty data', function() {

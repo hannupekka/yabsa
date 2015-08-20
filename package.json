@@ -9,7 +9,14 @@
     "type": "git",
     "url": "https://github.com/hannupekka/splitthebill.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "browser-request": "^0.3.3",
+    "guid": "0.0.12",
+    "hapi": "^9.0.2",
+    "inert": "^3.0.1",
+    "joi": "^6.6.1",
+    "mongoose": "^4.1.2"
+  },
   "devDependencies": {
     "browserify": "^10.2.4",
     "chai": "^3.0.0",
@@ -27,7 +34,9 @@
     "mocha": "^2.2.5",
     "react": "^0.13.3",
     "react-intl": "^1.2.0",
+    "react-router": "^0.13.3",
     "reactify": "^1.1.1",
+    "reflux": "^0.2.12",
     "uglifyify": "^3.0.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.2"
