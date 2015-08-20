@@ -11,13 +11,15 @@ module.exports = React.createClass({
                 var data = JSON.parse(body);
                 this.setState({persons: data.data});
                 this.props.onCurrencyChange(data.currency);
+                this.shareTotal();
             }.bind(this));
         }
     },
     getInitialState: function() {
         var persons = this.props.bid ? [] : [{
             'name': 'John Doe',
-            'paid': '0'
+            'paid': '0',
+            'pristine': true
         }];
         var currency = this.props.bid ? this.props.currency : 'EUR';
         return {persons: persons, currency: currency};
@@ -34,14 +36,17 @@ module.exports = React.createClass({
     handleChange: function(field, value, idx) {
         var persons = this.state.persons.slice();
         persons[idx][field] = value;
+        delete persons[idx].pristine;
         this.setState({persons: persons});
     },
     addPerson: function(event) {
         event.preventDefault();
-        this.setState({persons: this.state.persons.concat([{name: 'John Doe', paid: 0}])});
+        this.setState({persons: this.state.persons.concat([{name: 'John Doe', paid: '0', pristine: true}])});
     },
     shareTotal: function(event) {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         this.props.onShareTotal(this.state.persons);
     },
     toggleSettings: function(event) {
@@ -55,7 +60,7 @@ module.exports = React.createClass({
     render: function() {
         var persons = this.state.persons.map(function(person, i) {
             return (
-                <Person key={i} idx={i} name={person.name} paid={person.paid} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} currency={this.props.currency} bid={this.props.bid} />
+                <Person key={i} idx={i} data={person} personCount={this.state.persons.length} onPersonChange={this.handleChange} onDelete={this.removePerson.bind(this, i)} currency={this.props.currency} bid={this.props.bid} />
             );
         }.bind(this));
 
