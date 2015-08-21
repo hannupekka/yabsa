@@ -1,8 +1,8 @@
-var sortBy = require('lodash.sortby');
-var each = require('lodash.foreach');
-var reduce = require('lodash.reduce');
-var find = require('lodash.find');
-var remove = require('lodash.remove');
+var sortBy = require('lodash.sortby'),
+    each = require('lodash.foreach'),
+    reduce = require('lodash.reduce'),
+    find = require('lodash.find'),
+    remove = require('lodash.remove');
 
 /**
  * @param {Array} Array of object with keys name and paid.
@@ -13,7 +13,7 @@ module.exports = function (data) {
 
     // Remove invalid persons.
     remove(data, function (person) {
-       return !person.name || person.name.length === 0;
+        return !person.name || person.name.length === 0;
     });
 
     // Sort data by paid amount and then reverse.
@@ -21,8 +21,8 @@ module.exports = function (data) {
 
     // Add ID for each person.
     each(sorted, function (person, idx) {
-       person.id = idx;
-       person.paid = Math.round(Number(person.paid * 100));
+        person.id = idx;
+        person.paid = Math.round(Number(person.paid * 100));
     });
 
     // Calculate total amount.

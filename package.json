@@ -26,6 +26,7 @@
     "gulp-jsxcs": "^0.1.9",
     "gulp-less": "^3.0.3",
     "gulp-mocha": "^2.1.2",
+    "gulp-plumber": "^1.0.1",
     "gulp-uglifycss": "^1.0.4",
     "lodash.find": "^3.2.1",
     "lodash.foreach": "^3.0.3",

@@ -9,6 +9,7 @@ var path = require('path');
 var autoprefixer = require('gulp-autoprefixer');
 var uglifycss = require('gulp-uglifycss');
 var mocha = require('gulp-mocha');
+var plumber = require('gulp-plumber');
 
 // External dependencies.
 var libs = [
@@ -53,6 +54,7 @@ gulp.task('vendor', function() {
 
     bundler
         .bundle()
+        .on('error', function(err){console.log(err.message);})
         .pipe(source('vendor.js'))
         .pipe(gulp.dest('./public/assets/js'));
 });
@@ -71,9 +73,10 @@ gulp.task('app', function() {
     }, 'uglifyify');
 
     bundler
-    .bundle()
-    .pipe(source('bundle.js'))
-    .pipe(gulp.dest('./public/assets/js/'));
+        .bundle()
+        .on('error', function(err){console.log(err.message);})
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('./public/assets/js/'));
 
 });
 
@@ -92,11 +95,13 @@ gulp.task('browserify', function() {
     .on('update', function () {
         var updateStart = Date.now();
         watcher.bundle()
+        .on('error', function(err){console.log(err.message);})
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('./public/assets/js/'));
         console.log('Updated!', (Date.now() - updateStart) + 'ms');
     })
     .bundle()
+    .on('error', function(err){console.log(err.message);})
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./public/assets/js/'));
 });
@@ -107,6 +112,12 @@ gulp.task('lesswatch', function () {
 
 gulp.task('jscs', function () {
     gulp.src(['client/src/js/**/*.js*'])
+        .pipe(plumber({
+            errorHandler: function (err) {
+                console.log(err);
+                this.emit('end');
+            }
+        }))
         .pipe(jsxcs());
 });
 
@@ -116,4 +127,4 @@ gulp.task('test', function () {
 });
 
 gulp.task('default', ['browserify', 'lesswatch']);
-gulp.task('build', ['test', 'less', 'vendor', 'app']);
+gulp.task('build', ['test', 'less', 'jscs', 'vendor', 'app']);
