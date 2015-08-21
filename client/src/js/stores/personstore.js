@@ -21,9 +21,8 @@ var PersonStore = Reflux.createStore({
     },
     addPerson: function() {
         this.persons.personList.push({
-            name: 'John Doe',
-            paid: '0',
-            pristine: true
+            name: undefined,
+            paid: undefined
         });
         this.trigger(this.persons);
     },

@@ -1,32 +1,36 @@
 /** @jsx React.DOM */
-var React = require('react');
-var Reflux = require('reflux');
-var PersonActions = require('../actions/personactions.js');
-var PersonStore = require('../stores/personstore.js');
-var SettingStore = require('../stores/settingstore.js');
+var React = require('react'),
+    Reflux = require('reflux'),
+    PersonActions = require('../actions/personactions.js'),
+    ValidateActions = require('../actions/validateactions.js'),
+    PersonStore = require('../stores/personstore.js'),
+    ValidateStore = require('../stores/validatestore.js'),
+    SettingStore = require('../stores/settingstore.js'),
+    classNames = require('classnames');
 
 module.exports = React.createClass({
     mixins: [
         Reflux.connect(PersonStore, 'persons'),
-        Reflux.connect(SettingStore, 'settings'),
+        Reflux.connect(ValidateStore, 'validation'),
+        Reflux.connect(SettingStore, 'settings')
     ],
-    handleChange: function(field, event) {
+    handleChange: function (field, event) {
         PersonActions.editPerson(field, event.target.value, this.props.idx);
     },
-    handleDelete: function(event) {
+    handleDelete: function (event) {
         if (event) {
             event.preventDefault();
         }
         PersonActions.deletePerson(this.props.idx, event);
     },
-    setName: function() {
-        return this.props.person.pristine ? undefined : this.props.person.name;
+    setName: function () {
+        return this.props.person.name;
     },
-    setPaid: function() {
-        return this.props.person.pristine ? undefined : this.props.person.paid;
+    setPaid: function () {
+        return this.props.person.paid;
     },
-    render: function() {
-        var deleteButton = function() {
+    render: function () {
+        var deleteButton = function () {
             if (this.state.persons.personList && this.state.persons.personList.length > 1) {
                 return (
                     <div className='col-xs-1'>
@@ -34,16 +38,25 @@ module.exports = React.createClass({
                     </div>
                 );
             }
-        }.bind(this);
+        }.bind(this),
+        nameClasses = classNames({
+            'person__name': true,
+            'col-xs-4': true,
+            'has-error': !this.state.validation.persons[this.props.idx].name
+        }),
+        paidClasses = classNames({
+            'input-group': true,
+            'has-error': !this.state.validation.persons[this.props.idx].paid
+        });
 
         return (
             <div className='personList__person clearfix'>
-                <div className='person__name col-xs-4'>
-                    <input type='text' className='form-control input-lg' placeholder={this.props.person.name} value={this.setName()} onChange={this.handleChange.bind(this, 'name')} autoFocus />
+                <div className={nameClasses}>
+                    <input type='text' className='form-control input-lg' placeholder='John Doe' value={this.setName()} onChange={this.handleChange.bind(this, 'name')} autoFocus />
                 </div>
                 <div className='person__paid col-xs-6'>
-                    <div className='input-group'>
-                        <input type='tel' className='form-control input-lg' placeholder={this.props.person.paid} value={this.setPaid()} onChange={this.handleChange.bind(this, 'paid')} />
+                    <div className={paidClasses}>
+                        <input type='tel' className='form-control input-lg' placeholder='0' value={this.setPaid()} onChange={this.handleChange.bind(this, 'paid')} />
                         <div className="input-group-addon">{this.state.settings.currency}</div>
                     </div>
                 </div>

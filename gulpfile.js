@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var jsxcs = require('gulp-jsxcs');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var reactify = require('reactify');
@@ -22,7 +23,7 @@ var libs = [
     'lodash.remove',
     'react-intl',
     'browser-request',
-    'reflux'
+    'classnames'
 ];
 
 gulp.task('less', function () {
@@ -102,6 +103,11 @@ gulp.task('browserify', function() {
 
 gulp.task('lesswatch', function () {
     gulp.watch('./client/src/less/styles.less', ['less']);
+});
+
+gulp.task('jscs', function () {
+    gulp.src(['client/src/js/**/*.js*'])
+        .pipe(jsxcs());
 });
 
 gulp.task('test', function () {

@@ -1,16 +1,16 @@
 /** @jsx React.DOM */
-var React = require('react/addons');
-var Reflux = require('reflux');
-var Person = require('./person.jsx');
-var PersonStore = require('../stores/personstore.js');
-var request = require('browser-request');
+var React = require('react/addons'),
+    Reflux = require('reflux'),
+    Person = require('./person.jsx'),
+    PersonStore = require('../stores/personstore.js'),
+    request = require('browser-request');
 
 module.exports = React.createClass({
     mixins: [Reflux.connect(PersonStore, 'persons')],
-    render: function() {
+    render: function () {
         var persons = '';
         if (this.state.persons.personList) {
-            persons = this.state.persons.personList.map(function(person, i) {
+            persons = this.state.persons.personList.map(function (person, i) {
                 return (
                     <Person key={i} idx={i} person={person} />
                 );

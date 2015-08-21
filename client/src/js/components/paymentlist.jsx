@@ -1,14 +1,13 @@
 /** @jsx React.DOM */
-var React = require('react');
-var Reflux = require('reflux');
-var Payment = require('./payment.jsx');
-var ReactIntl = require('react-intl');
-var IntlMixin = ReactIntl.IntlMixin;
-var FormattedNumber = ReactIntl.FormattedNumber;
-var PersonStore = require('../stores/personstore.js');
-var SettingStore = require('../stores/settingstore.js');
-
-var _map = require('lodash.map');
+var React = require('react'),
+    Reflux = require('reflux'),
+    Payment = require('./payment.jsx'),
+    ReactIntl = require('react-intl'),
+    IntlMixin = ReactIntl.IntlMixin,
+    FormattedNumber = ReactIntl.FormattedNumber,
+    PersonStore = require('../stores/personstore.js'),
+    SettingStore = require('../stores/settingstore.js'),
+    map = require('lodash.map');
 
 module.exports = React.createClass({
     mixins: [
@@ -16,9 +15,9 @@ module.exports = React.createClass({
         Reflux.connect(PersonStore, 'persons'),
         Reflux.connect(SettingStore, 'settings')
     ],
-    render: function() {
-        var payments = _map(this.state.persons.payments, function(payment, i) {
-            var personsPayments = payment.to.map(function(p, j) {
+    render: function () {
+        var payments = map(this.state.persons.payments, function (payment, i) {
+            var personsPayments = payment.to.map(function (p, j) {
                 return (
                     <Payment key={j} to={p.to} amount={p.amount} />
                 );
@@ -37,7 +36,7 @@ module.exports = React.createClass({
         return (
             <div id='paymentList'>
                 <div className='stats'>
-                    <b>Total: </b> <FormattedNumber value={this.state.persons.total} style='currency' currency={this.state.settings.currency} /> <br />
+                    <b>Total: </b> <FormattedNumber value={10.10} style='currency' currency={this.state.settings.currency} /> <br />
                     <b>Share: </b> <FormattedNumber value={this.state.persons.share} style='currency' currency={this.state.settings.currency} /> <br />
                 </div>
                 {payments}

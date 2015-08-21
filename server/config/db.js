@@ -2,6 +2,6 @@
 
 module.exports = {
     mongo: {
-        uri: process.env.MONGOHQ_URL || 'mongodb://localhost/yabsa'
+        uri: process.env.MONGOLAB_URI || 'mongodb://localhost/yabsa'
     }
 };

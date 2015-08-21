@@ -1,12 +1,12 @@
 /** @jsx React.DOM */
-var React = require('react');
-var ReactIntl = require('react-intl');
-var IntlMixin = ReactIntl.IntlMixin;
-var FormattedNumber = ReactIntl.FormattedNumber;
+var React = require('react'),
+    ReactIntl = require('react-intl'),
+    IntlMixin = ReactIntl.IntlMixin,
+    FormattedNumber = ReactIntl.FormattedNumber;
 
 module.exports = React.createClass({
     mixins: [IntlMixin],
-    render: function() {
+    render: function () {
         return (
             <div className='paymentList__transaction clearfix col-md-12'>
                 <div className='col-xs-3 col-md-4 transaction__amount'>

@@ -1,36 +1,32 @@
-var _sortBy = require('lodash.sortby');
-var _each = require('lodash.foreach');
-var _reduce = require('lodash.reduce');
-var _find = require('lodash.find');
-var _remove = require('lodash.remove');
-
-var round = function(num) {
-    return +(Math.round(num + "e+2")  + "e-2");
-};
+var sortBy = require('lodash.sortby');
+var each = require('lodash.foreach');
+var reduce = require('lodash.reduce');
+var find = require('lodash.find');
+var remove = require('lodash.remove');
 
 /**
  * @param {Array} Array of object with keys name and paid.
  * @return {Array} Array of objects with payment details.
  */
-module.exports = function(data) {
+module.exports = function (data) {
     var sorted, total, share, payments;
 
     // Remove invalid persons.
-    _remove(data, function(person) {
+    remove(data, function (person) {
        return !person.name || person.name.length === 0;
     });
 
     // Sort data by paid amount and then reverse.
-    sorted = _sortBy(data, 'paid').reverse();
+    sorted = sortBy(data, 'paid').reverse();
 
     // Add ID for each person.
-    _each(sorted, function(person, idx) {
+    each(sorted, function (person, idx) {
        person.id = idx;
        person.paid = Math.round(Number(person.paid * 100));
     });
 
     // Calculate total amount.
-    total = _reduce(sorted, function(total, person) {
+    total = reduce(sorted, function (total, person) {
         return total + person.paid;
     }, 0);
 
@@ -41,7 +37,7 @@ module.exports = function(data) {
     payments = {};
 
     // Loop through persons.
-    _each(sorted, function(person) {
+    each(sorted, function (person) {
         // Calcaulate how much person still has to pay (or receive, if the amount is negative).
         person.left = Math.round(share - person.paid);
 
@@ -52,8 +48,8 @@ module.exports = function(data) {
             payments[person.id] = payments[person.id] || {name: person.name, to: []};
 
             // Find the first person who is to receive money.
-            target = _find(sorted, function(p) {
-               return p.left < 0;
+            target = find(sorted, function (p) {
+                return p.left < 0;
             });
 
             // Payment receiver found.
