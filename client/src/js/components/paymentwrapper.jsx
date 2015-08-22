@@ -23,6 +23,7 @@ module.exports = React.createClass({
         router: React.PropTypes.func
     },
     componentDidMount: function () {
+        window.addEventListener('keydown', this.handleKeyDown);
         var baseUrl = window.location.origin,
             bid = this.context.router.getCurrentParams().bid;
         if (bid) {
@@ -38,6 +39,9 @@ module.exports = React.createClass({
                 }
             }.bind(this));
         }
+    },
+    componentWillUnmount: function () {
+        window.removeEventListener('keydown', this.handleKeyDown);
     },
     addPerson: function (event) {
         if (event) {
@@ -71,12 +75,15 @@ module.exports = React.createClass({
             event.preventDefault();
         }
 
+        if (!this.state.validation.valid || Object.keys(this.state.persons.payments).length === 0) {
+            return;
+        }
+
         var baseUrl = window.location.origin,
             router = this.context.router,
             bid = router.getCurrentParams().bid,
             method = bid ? 'PUT' : 'POST',
-            url = bid ? '/bill/' + bid : '/bill',
-            results = shareBill(this.getData(this.state.persons.personList));
+            url = bid ? '/bill/' + bid : '/bill';
 
         request({url: baseUrl + '/api/v1' + url, method: method, body: {data: this.state.persons.personList, currency: this.state.settings.currency}, json: true}, function (error, response, body) {
             if (!bid) {
@@ -119,6 +126,19 @@ module.exports = React.createClass({
         }
 
         return data;
+    },
+    handleKeyDown: function (event) {
+        if (event.ctrlKey || event.metaKey) {
+            switch (String.fromCharCode(event.which).toLowerCase()) {
+                case 's':
+                    event.preventDefault();
+                    this.saveBill();
+                    break;
+            }
+        } else if (event.keyCode === 13) {
+            event.preventDefault();
+            this.shareTotal();
+        }
     },
     render: function () {
         var disabled = this.state.validation.valid ? undefined : 'disabled',
