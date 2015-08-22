@@ -1,8 +1,8 @@
-Split The Bill
+YABSA (Yet Another Bill Splitting App)
 =============
 [React](http://facebook.github.io/react/) application for splitting expenses between people.
 
-See it in action: [Split The Bill](http://hannupekka.github.io/splitthebill/)
+See it in action: [YABSA](http://yabsa.herokuapp.com)
 
 Development
 ===========
