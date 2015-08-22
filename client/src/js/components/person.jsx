@@ -47,11 +47,11 @@ module.exports = React.createClass({
         nameClasses = classNames({
             'person__name': true,
             'col-xs-4': true,
-            'has-error': !this.state.validation.persons[this.props.idx].name
+            'has-error': this.state.validation.persons[this.props.idx] && !this.state.validation.persons[this.props.idx].name
         }),
         paidClasses = classNames({
             'input-group': true,
-            'has-error': !this.state.validation.persons[this.props.idx].paid
+            'has-error': this.state.validation.persons[this.props.idx] && !this.state.validation.persons[this.props.idx].paid
         });
 
         return (
