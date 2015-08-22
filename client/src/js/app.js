@@ -10,5 +10,5 @@ var React = require('react'),
     );
 
 Router.run(routes, function (Handler) {
-  React.render(<Handler/>, document.getElementById('wrapper'));
+    React.render(<Handler/>, document.getElementById('wrapper'));
 });

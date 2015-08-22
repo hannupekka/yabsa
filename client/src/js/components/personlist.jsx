@@ -20,7 +20,7 @@ module.exports = React.createClass({
         return (
             <form id='personList'>
                 {persons}
-                <div id='help' className='col-xs-12'>Protip: you can enter multiple amounts for person by separating them by space!</div>
+                <div id='help'>Protip: you can enter multiple amounts for person by separating them by space!</div>
             </form>
 
         );

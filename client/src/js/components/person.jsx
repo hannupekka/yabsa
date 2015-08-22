@@ -29,6 +29,11 @@ module.exports = React.createClass({
     setPaid: function () {
         return this.props.person.paid;
     },
+    keyDown: function (event) {
+        if (event.which === 9) {
+            PersonActions.addPerson();
+        }
+    },
     render: function () {
         var deleteButton = function () {
             if (this.state.persons.personList && this.state.persons.personList.length > 1) {
@@ -56,7 +61,7 @@ module.exports = React.createClass({
                 </div>
                 <div className='person__paid col-xs-6'>
                     <div className={paidClasses}>
-                        <input type='tel' className='form-control input-lg' placeholder='0' value={this.setPaid()} onChange={this.handleChange.bind(this, 'paid')} />
+                        <input type='tel' className='form-control input-lg' placeholder='0' value={this.setPaid()} onChange={this.handleChange.bind(this, 'paid')} onKeyDown={this.keyDown} />
                         <div className="input-group-addon">{this.state.settings.currency}</div>
                     </div>
                 </div>

@@ -62,14 +62,21 @@ module.exports = React.createClass({
             return;
         }
 
+        var results = shareBill(this.getData(this.state.persons.personList));
+
+        PersonActions.shareTotal(results);
+    },
+    saveBill: function (event) {
+        if (event) {
+            event.preventDefault();
+        }
+
         var baseUrl = window.location.origin,
             router = this.context.router,
             bid = router.getCurrentParams().bid,
             method = bid ? 'PUT' : 'POST',
             url = bid ? '/bill/' + bid : '/bill',
             results = shareBill(this.getData(this.state.persons.personList));
-
-        PersonActions.shareTotal(results);
 
         request({url: baseUrl + '/api/v1' + url, method: method, body: {data: this.state.persons.personList, currency: this.state.settings.currency}, json: true}, function (error, response, body) {
             if (!bid) {
@@ -78,7 +85,6 @@ module.exports = React.createClass({
             }
         }.bind(this));
     },
-
     deleteBill: function (event) {
         if (event) {
             event.preventDefault();
@@ -115,31 +121,38 @@ module.exports = React.createClass({
         return data;
     },
     render: function () {
-        var deleteButton =
+        var disabled = this.state.validation.valid ? undefined : 'disabled',
+            saveButton =
+            function () {
+                if (Object.keys(this.state.persons.payments).length > 0) {
+                    return (
+                        <button className='btn btn-sm btn-primary' onClick={this.saveBill} disabled={disabled}><i className='fa fa-floppy-o'></i><span className='hidden-xs'> Save bill</span></button>
+                    );
+                }
+            }.bind(this),
+            deleteButton =
             function () {
                 var bid = this.context.router.getCurrentParams().bid;
                 if (bid) {
                     return (
-                        <button className='btn btn-sm btn-primary' onClick={this.deleteBill}><i className='fa fa-trash-o'></i><span className='hidden-xs'> Delete</span></button>
+                        <button className='btn btn-sm btn-primary' onClick={this.deleteBill}><i className='fa fa-trash-o'></i><span className='hidden-xs'> Delete bill</span></button>
                     );
                 }
-            }.bind(this),
-            disabled = this.state.validation.valid ? undefined : 'disabled';
+            }.bind(this);
 
         return (
             <div>
                 <Settings />
-                <div className='col-xs-8'>
-                    <PersonList />
-                    <div id='buttons' className='col-xs-12'>
-                        <button className='btn btn-sm btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i><span className='hidden-xs'> Add person</span></button>
-                        <button className='btn btn-sm btn-primary settings' onClick={this.toggleSettings}><i className='fa fa-cog'></i><span className='hidden-xs'> Settings</span></button>
-                        <button className='btn btn-sm btn-primary' onClick={this.shareTotal} disabled={disabled}><i className='fa fa-calculator'></i><span className='hidden-xs'> Share total</span></button>
-                        {deleteButton()}
-                    </div>
+                <PersonList />
+                <div className='buttons main'>
+                    <button className='btn btn-sm btn-primary' onClick={this.addPerson}><i className='fa fa-user-plus'></i><span className='hidden-xs'> Add person</span></button>
+                    <button className='btn btn-sm btn-primary settings' onClick={this.toggleSettings}><i className='fa fa-cog'></i><span className='hidden-xs'> Settings</span></button>
+                    <button className='btn btn-sm btn-primary' onClick={this.shareTotal} disabled={disabled}><i className='fa fa-calculator'></i><span className='hidden-xs'> Share total</span></button>
                 </div>
-                <div className='col-xs-4'>
-                    <PaymentList />
+                <PaymentList />
+                <div className='col-xs-12 buttons'>
+                    {saveButton()}
+                    {deleteButton()}
                 </div>
             </div>
         );

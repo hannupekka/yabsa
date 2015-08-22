@@ -24,19 +24,20 @@ module.exports = React.createClass({
             });
 
             return (
-                <div key={i} className='paymentList__payment clearfix'>
-                    <div className='paymentList__from'>{payment.name}</div>
+                <div key={i} className='paymentList__payment clearfix col-md-4'>
+                    <div className='paymentList__from'>{payment.name} pays:</div>
                     <div className='paymentList__transactions clearfix bg-primary'>
                         {personsPayments}
                     </div>
                 </div>
             );
-        });
+        }),
+            className = Object.keys(this.state.persons.payments).length > 0 ? 'clearfix' : 'hidden';
 
         return (
-            <div id='paymentList'>
-                <div className='stats'>
-                    <b>Total: </b> <FormattedNumber value={10.10} style='currency' currency={this.state.settings.currency} /> <br />
+            <div id='paymentList' className={className}>
+                <div className='stats col-xs-12'>
+                    <b>Total: </b> <FormattedNumber value={this.state.persons.total} style='currency' currency={this.state.settings.currency} /> <br />
                     <b>Share: </b> <FormattedNumber value={this.state.persons.share} style='currency' currency={this.state.settings.currency} /> <br />
                 </div>
                 {payments}
