@@ -23,24 +23,36 @@ module.exports = React.createClass({
         router: React.PropTypes.func
     },
     componentDidMount: function () {
+        // Attach event listener.
         window.addEventListener('keydown', this.handleKeyDown);
+
+        // Get current url and bill ID.
         var baseUrl = window.location.origin,
             bid = this.context.router.getCurrentParams().bid;
+
+        // If bill ID exists, load data.
         if (bid) {
             request(baseUrl + '/api/v1/bill/' + bid, function (error, response, body) {
                 if (response.statusCode !== 200) {
+                    // Invalid bill ID, transition to index.
                     this.context.router.transitionTo('index');
                 } else {
+                    // Parse and process data.
                     var data = JSON.parse(body),
                         results = shareBill(this.getData(data.data));
+
+                    // Set person data and settings.
                     PersonActions.setPersons(data.data);
                     SettingActions.setCurrency(data.currency);
+
+                    // Show results.
                     PersonActions.shareTotal(results);
                 }
             }.bind(this));
         }
     },
     componentWillUnmount: function () {
+        // Detach event listeners.
         window.removeEventListener('keydown', this.handleKeyDown);
     },
     addPerson: function (event) {
@@ -62,6 +74,7 @@ module.exports = React.createClass({
             event.preventDefault();
         }
 
+        // Only process data if it's valid.
         if (!this.state.validation.valid) {
             return;
         }
@@ -75,18 +88,22 @@ module.exports = React.createClass({
             event.preventDefault();
         }
 
+        // Only save data if it's valid.
         if (!this.state.validation.valid || Object.keys(this.state.persons.payments).length === 0) {
             return;
         }
 
+        // Get current url and router.
         var baseUrl = window.location.origin,
             router = this.context.router,
             bid = router.getCurrentParams().bid,
+            // If there's bill ID, use PUT to update data. Otherwise, just POST to save new.
             method = bid ? 'PUT' : 'POST',
             url = bid ? '/bill/' + bid : '/bill';
 
         request({url: baseUrl + '/api/v1' + url, method: method, body: {data: this.state.persons.personList, currency: this.state.settings.currency}, json: true}, function (error, response, body) {
             if (!bid) {
+                // If bill ID does not exist, get one from results.
                 SettingActions.setBid(body.bid);
                 router.transitionTo('bill', {bid: body.bid});
             }
@@ -113,6 +130,8 @@ module.exports = React.createClass({
             personCount = persons.length,
             person,
             paid;
+
+        // Loop through person data.
         for (; i < personCount; i++) {
             person = persons[i];
             // Sum amounts if multiple given. Also replace commas.
@@ -129,6 +148,7 @@ module.exports = React.createClass({
     },
     handleKeyDown: function (event) {
         if (event.ctrlKey || event.metaKey) {
+            // Handle CTRL+s combinations.
             switch (String.fromCharCode(event.which).toLowerCase()) {
                 case 's':
                     event.preventDefault();
@@ -136,6 +156,7 @@ module.exports = React.createClass({
                     break;
             }
         } else if (event.keyCode === 13) {
+            // Handle ENTER keys.
             event.preventDefault();
             this.shareTotal();
         }
