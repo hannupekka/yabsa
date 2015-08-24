@@ -1,5 +1,5 @@
 {
-  "name": "splitthebill",
+  "name": "yabsa",
   "version": "1.0.0",
   "description": "Splits expenses between people.",
   "scripts": {},
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hannupekka/splitthebill.git"
+    "url": "https://github.com/hannupekka/yabsa.git"
   },
   "dependencies": {
     "browser-request": "^0.3.3",
