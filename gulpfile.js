@@ -111,7 +111,7 @@ gulp.task('lesswatch', function () {
 });
 
 gulp.task('jscs', function () {
-    gulp.src(['client/src/js/**/*.js*'])
+    gulp.src(['client/src/js/**/*.js*', 'test/*.js'])
         .pipe(plumber({
             errorHandler: function (err) {
                 console.log(err);
@@ -122,7 +122,7 @@ gulp.task('jscs', function () {
 });
 
 gulp.task('test', function () {
-    return gulp.src('./test/test.js', {read: false})
+    return gulp.src('./test/*.js', {read: false})
         .pipe(mocha({reporter: 'spec'}));
 });
 
