@@ -23,7 +23,7 @@ var libs = [
     'lodash.find',
     'lodash.remove',
     'react-intl',
-    'browser-request',
+    'superagent',
     'classnames'
 ];
 
