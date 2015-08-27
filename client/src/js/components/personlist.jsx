@@ -2,8 +2,7 @@
 var React = require('react/addons'),
     Reflux = require('reflux'),
     Person = require('./person.jsx'),
-    PersonStore = require('../stores/personstore.js'),
-    request = require('browser-request');
+    PersonStore = require('../stores/personstore.js');
 
 module.exports = React.createClass({
     mixins: [Reflux.connect(PersonStore, 'persons')],

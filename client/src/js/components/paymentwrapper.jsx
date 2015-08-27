@@ -10,7 +10,7 @@ var React = require('react'),
     PersonStore = require('../stores/personstore.js'),
     ValidateStore = require('../stores/validatestore.js'),
     SettingStore = require('../stores/settingstore.js'),
-    request = require('browser-request'),
+    request = require('superagent'),
     shareBill = require('../functions.js');
 
 module.exports = React.createClass({
@@ -26,19 +26,20 @@ module.exports = React.createClass({
         // Attach event listener.
         window.addEventListener('keydown', this.handleKeyDown);
 
-        // Get current url and bill ID.
-        var baseUrl = window.location.origin,
-            bid = this.context.router.getCurrentParams().bid;
+        // Get current bill ID.
+        var bid = this.context.router.getCurrentParams().bid;
 
         // If bill ID exists, load data.
         if (bid) {
-            request(baseUrl + '/api/v1/bill/' + bid, function (error, response, body) {
-                if (response.statusCode !== 200) {
+            request
+            .get('/api/v1/bill/' + bid)
+            .end(function (error, response) {
+                if (response.status !== 200) {
                     // Invalid bill ID, transition to index.
                     this.context.router.transitionTo('index');
                 } else {
                     // Parse and process data.
-                    var data = JSON.parse(body),
+                    var data = response.body,
                         results = shareBill(this.getData(data.data));
 
                     // Set person data and settings.
@@ -93,19 +94,20 @@ module.exports = React.createClass({
             return;
         }
 
-        // Get current url and router.
-        var baseUrl = window.location.origin,
-            router = this.context.router,
+        // Get router and current bill ID.
+        var router = this.context.router,
             bid = router.getCurrentParams().bid,
             // If there's bill ID, use PUT to update data. Otherwise, just POST to save new.
-            method = bid ? 'PUT' : 'POST',
-            url = bid ? '/bill/' + bid : '/bill';
+            url = bid ? '/api/v1/bill/' + bid : '/api/v1/bill',
+            method = bid ? request.put(url) : request.post(url);
 
-        request({url: baseUrl + '/api/v1' + url, method: method, body: {data: this.state.persons.personList, currency: this.state.settings.currency}, json: true}, function (error, response, body) {
+        method
+        .send({data: this.state.persons.personList, currency: this.state.settings.currency})
+        .end(function (error, response) {
             if (!bid) {
                 // If bill ID does not exist, get one from results.
-                SettingActions.setBid(body.bid);
-                router.transitionTo('bill', {bid: body.bid});
+                SettingActions.setBid(response.body.bid);
+                router.transitionTo('bill', {bid: response.body.bid});
             }
         }.bind(this));
     },
@@ -114,11 +116,12 @@ module.exports = React.createClass({
             event.preventDefault();
         }
 
-        var baseUrl = window.location.origin,
-            router = this.context.router,
+        var router = this.context.router,
             bid = router.getCurrentParams().bid;
 
-        request({url: baseUrl + '/api/v1/bill/' + bid, method: 'DELETE'}, function (error, response, body) {
+        request
+        .del('/api/v1/bill/' + bid)
+        .end(function (error, response) {
             PersonActions.reset();
             SettingActions.reset();
             router.transitionTo('index');
