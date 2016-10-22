@@ -1,30 +1,36 @@
-YABSA (Yet Another Bill Splitting App)
-=============
-[React](http://facebook.github.io/react/) application for splitting expenses between people.
+# YABSA - yet another bill splitting app
 
-See it in action: [YABSA](http://yabsa.herokuapp.com)
+Splits expenses betweeb people.
 
-Features
-====
-* Responsive design.
-* REST API to save calculations to MongoDB.
+## Development
 
-Tech stack
-===
-* React
-* React Router
-* RefluxJS
-* Hapi (Joi for validation)
-* MongoDB
-* Gulp
+Install dependencies and start development server with:
 
-Development
-===========
-Run `gulp` to start watching for changes in JS/CSS. Run `gulp build` to create production build.
+```
+npm install
+npm run dev
+```
 
-Heroku
-===
-Add [MongoLab](https://devcenter.heroku.com/articles/mongolab#adding-mongolab-as-a-heroku-add-on) addon to your Heroku application and push to Heroku remote.
+Server with HMR should now be running on `http://localhost:8080`
 
+Redux DevTools are hidden by default. You can change this behavior and other settings from `src/containers/utils/DevTools.js`.
 
+***To toggle the DevTool panel during development:***
+<kbd>CTRL</kbd> + <kbd>H</kbd>
 
+***Change the DevTool panel's position during development:***
+<kbd>CTRL</kbd> + <kbd>Q</kbd>
+
+## Production build
+
+```
+npm run build
+```
+
+## Acknowledgements
+
+This project is a grateful recipient of the [Futurice Open Source sponsorship program](http://futurice.com/blog/sponsoring-free-time-open-source-activities).
+
+## License
+
+MIT
