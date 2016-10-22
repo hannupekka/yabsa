@@ -1,5 +1,17 @@
 @import '~styles/main';
 
+.persons {
+  margin-bottom: @padding;
+}
+
+.actions {
+  margin-top: @padding;
+}
+
+.addPerson {
+  composes: base--button;
+}
+
 // Animations
 .enter {
   animation: fadeInDown @duration--enter;
