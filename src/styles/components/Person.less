@@ -1,0 +1,24 @@
+@import '~styles/main';
+
+.person {
+  display: flex;
+  align-items: center;
+
+  & + & {
+    margin-top: @padding;
+  }
+}
+
+.input {
+  composes: base--input;
+  flex: 2;
+
+  & + & {
+    margin-left: @padding;
+  }
+}
+
+.total {
+  flex: 1;
+  margin-left: @padding;
+}
