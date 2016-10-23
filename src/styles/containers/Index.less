@@ -22,8 +22,35 @@
   composes: base--button;
 }
 
+.totals {
+  margin-top: @padding * 2;
+}
+
 .payments {
-  background: red;
+  margin-top: @padding * 2;
+}
+
+.payment {
+  & + & {
+    margin-top: @padding;
+  }
+}
+
+.to {
+  background-color: @color__blue--light;
+  color: @color__white;
+  padding: @padding;
+  margin-top: @padding / 2;
+
+  i {
+    margin: 0 @padding;
+  }
+}
+
+.target {
+  & + & {
+    margin-top: @padding / 2;
+  }
 }
 
 // Animations

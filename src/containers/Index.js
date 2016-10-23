@@ -3,6 +3,7 @@ import styles from 'styles/containers/Index';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
+import round from 'lodash/round';
 import Person from 'components/Person';
 import * as personActions from 'redux/modules/person';
 import * as paymentActions from 'redux/modules/payment';
@@ -10,6 +11,9 @@ import shareExpenses from 'utils/payments';
 
 type Props = {
   params: Object,
+  payments: Map,
+  share: number,
+  totalAmount: number,
   persons: Map,
   isValid: bool,
   onAddPerson: Function,
@@ -24,9 +28,9 @@ class Index extends Component {
   props: Props;
 
   onKeyDown = (e: KeyboardEvent): void => {
-    if (e.key === 'Enter') {
-      // eslint-disable-next-line
-      console.log('Enter');
+    const { isValid } = this.props;
+    if (e.key === 'Enter' && isValid) {
+      this.onShareExpenses();
     }
   }
 
@@ -37,6 +41,48 @@ class Index extends Component {
       payments.get('payments'),
       payments.get('share'),
       payments.get('totalAmount')
+    );
+  }
+
+  renderPayments = (): ?ElementType => {
+    const { payments, share, totalAmount } = this.props;
+
+    if (payments.isEmpty()) {
+      return null;
+    }
+
+    const paymentList = payments.map((payment, id) => {
+      return (
+        <div key={id} styleName="payment">
+          <b>{payment.get('from')}</b> pays:
+          <div styleName="to">
+            {
+              payment.get('to').map((to, i) => {
+                return (
+                  <div key={i} styleName="target">
+                    {round(to.get('amount'), 2)} EUR
+                    <i className="fa fa-long-arrow-right" aria-hidden="true" />
+                    {to.get('name')}
+                  </div>
+                );
+              }).toJS()
+            }
+          </div>
+        </div>
+      );
+    }).toArray();
+
+    return (
+      <div>
+        <div>
+          <div styleName="totals">
+            Total is <b>{totalAmount}</b> EUR of which each participants share is <b>{share}</b> EUR
+          </div>
+          <div styleName="payments">
+            {paymentList}
+          </div>
+        </div>
+      </div>
     );
   }
 
@@ -60,6 +106,17 @@ class Index extends Component {
     }).toJS();
   }
 
+  renderSaveButton = (): ?ElementType => {
+    const { isValid } = this.props;
+
+    return (
+      <button onClick={this.onShareExpenses} disabled={!isValid} styleName="shareExpenses">
+        <i className="fa fa-floppy-o" aria-hidden="true" />
+        Save expenses
+      </button>
+    );
+  }
+
   render() {
     const { isValid } = this.props;
     return (
@@ -78,9 +135,11 @@ class Index extends Component {
               <i className="fa fa-calculator" aria-hidden="true" />
               Share expenses
             </button>
+            {this.renderSaveButton()}
           </div>
         </div>
-        <div styleName="payments">
+        <div>
+          {this.renderPayments()}
         </div>
       </div>
     );
@@ -88,6 +147,9 @@ class Index extends Component {
 }
 
 const mapState = (state: StateType): StateType => ({
+  payments: state.payment.get('payments'),
+  share: state.payment.get('share'),
+  totalAmount: state.payment.get('totalAmount'),
   persons: state.person.get('persons'),
   isValid: state.person.get('persons')
     .every(person => person.get('name') !== '' && person.get('amount') !== '')
