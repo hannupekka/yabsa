@@ -19,11 +19,23 @@
   color: @color__white;
   border: none;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  font-size: 80%;
 
+  & + & {
+    margin-left: @padding;
+  }
 
   &:hover {
     background-color: darken(@color__blue--light, 5%);
     cursor: pointer;
+  }
+
+  &[disabled] {
+    background-color: desaturate(@color__blue--light, 50%);
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 
   i {
