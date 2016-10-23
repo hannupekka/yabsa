@@ -9,6 +9,21 @@
   }
 }
 
+.deletePerson {
+  composes: base--button;
+  background-color: transparent;
+  color: @color__blue--light;
+  box-shadow: none;
+
+  &:hover {
+    background-color: transparent;
+    color: @color__blue--dark;
+  }
+  i {
+    margin-right: 0;
+  }
+}
+
 .input {
   composes: base--input;
   flex: 2;

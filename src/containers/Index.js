@@ -10,6 +10,7 @@ type Props = {
   params: Object,
   persons: Map,
   onAddPerson: Function,
+  onDeletePerson: Function,
   onUpdateName: Function,
   onUpdateAmount: Function
 };
@@ -17,6 +18,13 @@ type Props = {
 // eslint-disable-next-line
 class Index extends Component {
   props: Props;
+
+  onKeyDown = (e: KeyboardEvent): void => {
+    if (e.key === 'Enter') {
+      // eslint-disable-next-line
+      console.log('Enter');
+    }
+  }
 
   renderPersons = (): ElementType => {
     const { persons } = this.props;
@@ -26,9 +34,12 @@ class Index extends Component {
         <Person
           key={person.get('id')}
           onAddPerson={this.props.onAddPerson}
+          onDeletePerson={this.props.onDeletePerson}
           onUpdateName={this.props.onUpdateName}
           onUpdateAmount={this.props.onUpdateAmount}
+          isFirstPerson={i === 0}
           isLastPerson={i === persons.size - 1}
+          hasMultiplePersons={persons.size > 1}
           {...person.toJS()}
         />
       );
@@ -38,7 +49,7 @@ class Index extends Component {
   render() {
     return (
       <div>
-        <div styleName="persons">
+        <div styleName="persons" onKeyDown={this.onKeyDown}>
           {this.renderPersons()}
           <div styleName="actions">
             <button onClick={this.props.onAddPerson} styleName="addPerson">
@@ -58,6 +69,7 @@ const mapState = (state: StateType): StateType => ({
 
 const mapActions = (dispatch: Function): Object => ({
   onAddPerson: (): Function => dispatch(personActions.addPerson()),
+  onDeletePerson: (id: string): Function => dispatch(personActions.deletePerson(id)),
   onUpdateName: (id: string, value: string) => dispatch(personActions.updateName(id, value)),
   onUpdateAmount: (id: string, value: string) => dispatch(personActions.updateAmount(id, value))
 });
