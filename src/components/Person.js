@@ -57,7 +57,6 @@ const Person: Component<Props> = (props: Props): ElementType => {
     }
 
     const amounts = filter(props.amount.split(' '), amount => parseFloat(amount));
-
     return round(sumBy(amounts, amount => Number(amount)), 2);
   };
 
