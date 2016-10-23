@@ -14,12 +14,16 @@
   margin-top: @padding;
 }
 
-.addPerson {
+.addPerson,
+.shareExpenses,
+.saveExpenses {
   composes: base--button;
-}
+  display: block;
+  margin: auto;
 
-.shareExpenses {
-  composes: base--button;
+  & + & {
+    margin-top: @padding;
+  }
 }
 
 .totals {
@@ -50,6 +54,19 @@
 .target {
   & + & {
     margin-top: @padding / 2;
+  }
+}
+
+@media @sm {
+  .addPerson,
+  .shareExpenses,
+  .saveExpenses {
+    display: inline-block;
+
+    & + & {
+      margin-left: @padding;
+      margin-top: 0;
+    }
   }
 }
 

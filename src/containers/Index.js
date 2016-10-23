@@ -44,11 +44,18 @@ class Index extends Component {
     );
   }
 
+  onSaveExpenses = (): void => {
+  }
+
   renderPayments = (): ?ElementType => {
     const { payments, share, totalAmount } = this.props;
 
-    if (payments.isEmpty()) {
+    if (payments.isEmpty() && totalAmount === 0) {
       return null;
+    } else if (payments.isEmpty() && totalAmount !== 0) {
+      return (
+        <div styleName="payments">All participants have paid equal amount - no need to share!</div>
+      );
     }
 
     const paymentList = payments.map((payment, id) => {
@@ -110,7 +117,7 @@ class Index extends Component {
     const { isValid } = this.props;
 
     return (
-      <button onClick={this.onShareExpenses} disabled={!isValid} styleName="shareExpenses">
+      <button onClick={this.onSaveExpenses} disabled={!isValid} styleName="saveExpenses">
         <i className="fa fa-floppy-o" aria-hidden="true" />
         Save expenses
       </button>

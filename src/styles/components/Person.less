@@ -2,7 +2,7 @@
 
 .person {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 
   & + & {
     margin-top: @padding;
@@ -14,6 +14,7 @@
   background-color: transparent;
   color: @color__blue--light;
   box-shadow: none;
+  font-size: 100%;
 
   &:hover {
     background-color: transparent;
@@ -29,11 +30,35 @@
   flex: 2;
 
   & + & {
-    margin-left: @padding;
+    margin-top: @padding / 2;
   }
 }
 
 .total {
   flex: 1;
-  margin-left: @padding;
+  margin-top: @padding;
+  text-align: center;
+}
+
+@media @md {
+  .person {
+    flex-direction: row;
+    align-items: center;
+
+    & + & {
+      margin-top: @padding;
+    }
+  }
+
+  .input {
+    & + & {
+      margin-top: 0;
+      margin-left: @padding;
+    }
+  }
+
+  .total {
+    margin-left: @padding;
+    text-align: left;
+  }
 }
