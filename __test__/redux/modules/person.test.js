@@ -15,6 +15,18 @@ describe('actions', () => {
     expect(Person.addPerson(id)).toEqual(expected);
   });
 
+  it('should create an action for deleting person', () => {
+    const id = cuid();
+    const expected = {
+      type: Person.DELETE_PERSON,
+      payload: {
+        id
+      }
+    };
+
+    expect(Person.deletePerson(id)).toEqual(expected);
+  });
+
   it('should create an action for updating person name', () => {
     const id = cuid();
     const expected = {
@@ -65,6 +77,22 @@ describe('reducer', () => {
         amount: ''
       })
     );
+
+    expect(
+      reducer(Person.initialState, action)
+    ).toEqual(expected);
+  });
+
+  it('should handle DELETE_PERSON', () => {
+    const id = Person.initialState.get('persons').first().get('id');
+    const action = {
+      type: Person.DELETE_PERSON,
+      payload: {
+        id
+      }
+    };
+
+    const expected = Person.initialState.deleteIn(['persons', id]);
 
     expect(
       reducer(Person.initialState, action)
