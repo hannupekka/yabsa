@@ -76,10 +76,9 @@ const Person: Component<Props> = (props: Props): ElementType => {
 
   return (
     <div styleName="person">
-      {renderDeleteButton()}
       <input
         type="text"
-        placeholder="John Doe"
+        placeholder="Name"
         styleName="input"
         value={props.name}
         autoFocus={props.isFirstPerson}
@@ -87,13 +86,16 @@ const Person: Component<Props> = (props: Props): ElementType => {
       />
       <input
         type="text"
-        placeholder="0"
+        placeholder="Paid amount"
         styleName="input"
         value={props.amount}
         onChange={onUpdateAmount}
         onKeyDown={onKeyDown}
       />
-      <span styleName="total">{sumAmount()} EUR</span>
+      <div styleName="total">
+        {sumAmount()} EUR
+        {renderDeleteButton()}
+      </div>
     </div>
   );
 };

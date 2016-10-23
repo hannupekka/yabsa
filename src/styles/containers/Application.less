@@ -8,5 +8,11 @@ body {
 }
 
 .content {
-  padding: @padding * 2;
+  padding: @padding / 2 @padding;
+}
+
+@media @md {
+  .content {
+    padding: @padding * 2;
+  }
 }
