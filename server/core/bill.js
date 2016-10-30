@@ -14,7 +14,7 @@ const getBill = bid => Bill.findOne({ bid })
     throw err;
   });
 
-const createBill = data => Bill.create({ paid: data.data, currency: data.currency })
+const createBill = ({ data, currency }) => Bill.create({ data, currency })
   .then(bill => bill)
   .catch(err => {
     throw err;

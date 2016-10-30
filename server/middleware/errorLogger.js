@@ -7,8 +7,9 @@ module.exports = (err, req, res, next) => {
     console.error(JSON.stringify(req.headers));
     console.error('Request parameters:');
     console.error(JSON.stringify(req.params));
+    console.error('Request body:');
+    console.error(JSON.stringify(req.body));
   }
-
   if (process.env.NODE_ENV === 'development') {
     console.log(err.stack);
   }

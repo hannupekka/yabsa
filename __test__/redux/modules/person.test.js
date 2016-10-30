@@ -15,6 +15,20 @@ describe('actions', () => {
     expect(Person.addPerson(id)).toEqual(expected);
   });
 
+  it('should create an action for loading person', () => {
+    const id = cuid();
+    const expected = {
+      type: Person.LOAD_PERSON,
+      payload: {
+        id,
+        name: 'bob',
+        amount: '100'
+      }
+    };
+
+    expect(Person.loadPerson({ id, name: 'bob', amount: '100' })).toEqual(expected);
+  });
+
   it('should create an action for deleting person', () => {
     const id = cuid();
     const expected = {
@@ -25,6 +39,24 @@ describe('actions', () => {
     };
 
     expect(Person.deletePerson(id)).toEqual(expected);
+  });
+
+  it('should create an action for deleting persons', () => {
+    const expected = {
+      type: Person.DELETE_PERSONS,
+      payload: {}
+    };
+
+    expect(Person.deletePersons()).toEqual(expected);
+  });
+
+  it('should create an action for resetting persons', () => {
+    const expected = {
+      type: Person.RESET_PERSONS,
+      payload: {}
+    };
+
+    expect(Person.resetPersons()).toEqual(expected);
   });
 
   it('should create an action for updating person name', () => {
@@ -83,6 +115,26 @@ describe('reducer', () => {
     ).toEqual(expected);
   });
 
+  it('should handle LOAD_PERSON', () => {
+    const id = cuid();
+    const action = {
+      type: Person.LOAD_PERSON,
+      payload: {
+        id,
+        name: 'bob',
+        amount: '100'
+      }
+    };
+
+    const expected = Person.initialState.setIn(['persons', id],
+      fromJS(action.payload)
+    );
+
+    expect(
+      reducer(Person.initialState, action)
+    ).toEqual(expected);
+  });
+
   it('should handle DELETE_PERSON', () => {
     const id = Person.initialState.get('persons').first().get('id');
     const action = {
@@ -97,6 +149,30 @@ describe('reducer', () => {
     expect(
       reducer(Person.initialState, action)
     ).toEqual(expected);
+  });
+
+  it('should handle DELETE_PERSONS', () => {
+    const action = {
+      type: Person.DELETE_PERSONS,
+      payload: {}
+    };
+
+    const expected = Person.initialState.set('persons', fromJS({}));
+
+    expect(
+      reducer(Person.initialState, action)
+    ).toEqual(expected);
+  });
+
+  it('should handle RESET_PERSONS', () => {
+    const action = {
+      type: Person.RESET_PERSONS,
+      payload: {}
+    };
+
+    expect(
+      reducer(Person.initialState, action)
+    ).toEqual(Person.initialState);
   });
 
   it('should handle UPDATE_NAME', () => {

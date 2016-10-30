@@ -17,7 +17,7 @@ const createBill = epUtils.createJsonRoute((req) => {
   const schema = {
     data: Joi.array().items(Joi.object().keys({
       name: Joi.string().required(),
-      paid: Joi.string().required()
+      amount: Joi.string().required()
     })),
     currency: Joi.string().required()
   };
@@ -32,7 +32,7 @@ const updateBill = epUtils.createJsonRoute((req) => {
     bid: Joi.string().guid(),
     data: Joi.array().items(Joi.object().keys({
       name: Joi.string().required(),
-      paid: Joi.string().required()
+      amount: Joi.string().required()
     })),
     currency: Joi.string().required()
   };

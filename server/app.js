@@ -3,6 +3,7 @@ const express = require('express');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
 const createRouter = require('./router');
@@ -23,6 +24,7 @@ module.exports = () => {
   app.use(bodyParser.json());
   app.use(compression());
   app.use(helmet());
+  app.use(cors());
 
   // Initialize API routes.
   const api = createRouter();
