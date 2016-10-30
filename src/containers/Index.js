@@ -44,7 +44,11 @@ class Index extends Component {
     if (bid) {
       this.props.onDeletePersons().then(() => {
         this.props.onFetchBill(bid).then(response => {
-          forEach(response.payload.data, person => this.props.onLoadPerson(person));
+          if (response.error) {
+            this.context.router.push('/');
+          } else {
+            forEach(response.payload.data, person => this.props.onLoadPerson(person));
+          }
         });
       });
     }
@@ -147,12 +151,12 @@ class Index extends Component {
   }
 
   renderSaveButton = (): ?ElementType => {
-    const { isValid } = this.props;
+    const { isValid, routeParams: { bid } } = this.props;
 
     return (
       <button onClick={this.onCreateBill} disabled={!isValid} styleName="saveExpenses">
         <i className="fa fa-floppy-o" aria-hidden="true" />
-        Save expenses
+        { bid ? 'Update expenses' : 'Save expenses' }
       </button>
     );
   }
