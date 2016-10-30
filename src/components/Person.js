@@ -26,12 +26,12 @@ const Person: Component<Props> = (props: Props): ElementType => {
     props.onDeletePerson(props.id);
   };
 
-  const onUpdateName = (e: DOMEvent): void => {
+  const onUpdateName = (e: InputEvent): void => {
     const value = e.target.value;
     props.onUpdateName(props.id, value);
   };
 
-  const onUpdateAmount = (e: DOMEvent): void => {
+  const onUpdateAmount = (e: InputEvent): void => {
     const value = e.target.value;
 
     if (value.match(/^[0-9., ]*$/)) {
