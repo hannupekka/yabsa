@@ -7,6 +7,7 @@ import Index from 'containers/Index';
 const routes = (
   <Route path="/" component={Application}>
     <IndexRoute component={Index} />
+    <Route path=":bid" component={Index} />
   </Route>
 );
 

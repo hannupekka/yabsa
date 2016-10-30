@@ -3,9 +3,7 @@ import styles from 'styles/components/Person';
 import React from 'react';
 import { pure } from 'recompose';
 import type { Component } from 'recompose';
-import sumBy from 'lodash/sumby';
-import filter from 'lodash/filter';
-import round from 'lodash/round';
+import { sumBy, filter, round } from 'lodash';
 import CSSModules from 'react-css-modules';
 
 type Props = {
@@ -15,10 +13,10 @@ type Props = {
   isFirstPerson: bool,
   isLastPerson: bool,
   hasMultiplePersons: bool,
-  onAddPerson: Function,
-  onDeletePerson: Function,
-  onUpdateName: Function,
-  onUpdateAmount: Function
+  onAddPerson: () => ActionType,
+  onDeletePerson: (id: string) => ActionType,
+  onUpdateName: (id: string, value: string) => ActionType,
+  onUpdateAmount: (id: string, value: string) => ActionType
 }
 
 const Person: Component<Props> = (props: Props): ElementType => {

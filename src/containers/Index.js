@@ -3,7 +3,7 @@ import styles from 'styles/containers/Index';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
-import round from 'lodash/round';
+import { forEach, round } from 'lodash';
 import Person from 'components/Person';
 import * as personActions from 'redux/modules/person';
 import * as paymentActions from 'redux/modules/payment';
@@ -11,21 +11,51 @@ import shareExpenses from 'utils/payments';
 
 type Props = {
   params: Object,
+  routeParams: Object,
   payments: Map,
   share: number,
   totalAmount: number,
   persons: Map,
   isValid: bool,
-  onAddPerson: Function,
-  onDeletePerson: Function,
-  onSetPayments: Function,
-  onUpdateName: Function,
-  onUpdateAmount: Function
+  onAddPerson: () => ActionType,
+  onCreateBill: (persons: Map) => Function,
+  onDeletePerson: (id: string) => ActionType,
+  onDeletePersons: () => Function,
+  onFetchBill: (bid: string) => Function,
+  onLoadPerson: (person: Object) => ActionType,
+  onSetPayments: (payments: Map, share: number, totalAmount: number) => ActionType,
+  onResetPayments: () => ActionType,
+  onResetPersons: () => Function,
+  onUpdateName: (id: string, value: string) => ActionType,
+  onUpdateAmount: (id: string, value: string) => ActionType
 };
 
 // eslint-disable-next-line
 class Index extends Component {
   props: Props;
+
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  }
+
+  componentDidMount = (): void => {
+    const { routeParams: { bid } } = this.props;
+
+    if (bid) {
+      this.props.onDeletePersons().then(() => {
+        this.props.onFetchBill(bid).then(response => {
+          forEach(response.payload.data, person => this.props.onLoadPerson(person));
+        });
+      });
+    }
+  }
+
+  componentDidUpdate = (prevProps: Object): void => {
+    const { routeParams: { bid } } = this.props;
+    if (!bid && prevProps.routeParams.bid) {
+      this.props.onResetPersons().then(() => this.props.onResetPayments());
+    }
+  }
 
   onKeyDown = (e: KeyboardEvent): void => {
     const { isValid } = this.props;
@@ -44,7 +74,10 @@ class Index extends Component {
     );
   }
 
-  onSaveExpenses = (): void => {
+  onCreateBill = (): void => {
+    this.props.onCreateBill(this.props.persons).then(response => {
+      this.context.router.push(response.payload.bid);
+    });
   }
 
   renderPayments = (): ?ElementType => {
@@ -83,7 +116,7 @@ class Index extends Component {
       <div>
         <div>
           <div styleName="totals">
-            Total is <b>{totalAmount}</b> EUR of which each participants share is <b>{share}</b> EUR
+            Total is <b>{totalAmount} EUR</b> of which each participants share is <b>{share} EUR</b>
           </div>
           <div styleName="payments">
             {paymentList}
@@ -117,7 +150,7 @@ class Index extends Component {
     const { isValid } = this.props;
 
     return (
-      <button onClick={this.onSaveExpenses} disabled={!isValid} styleName="saveExpenses">
+      <button onClick={this.onCreateBill} disabled={!isValid} styleName="saveExpenses">
         <i className="fa fa-floppy-o" aria-hidden="true" />
         Save expenses
       </button>
@@ -162,14 +195,19 @@ const mapState = (state: StateType): StateType => ({
     .every(person => person.get('name') !== '' && person.get('amount') !== '')
 });
 
-const mapActions = (dispatch: Function): Object => ({
-  onAddPerson: (): Function => dispatch(personActions.addPerson()),
-  onDeletePerson: (id: string): Function => dispatch(personActions.deletePerson(id)),
-  onSetPayments: (payments: Map, share: number, totalAmount: number): Function =>
-    dispatch(paymentActions.setPayments(payments, share, totalAmount)),
-  onUpdateName: (id: string, value: string) => dispatch(personActions.updateName(id, value)),
-  onUpdateAmount: (id: string, value: string) => dispatch(personActions.updateAmount(id, value))
-});
+const mapActions = {
+  onAddPerson: personActions.addPerson,
+  onCreateBill: paymentActions.createBill,
+  onDeletePerson: personActions.deletePerson,
+  onDeletePersons: personActions.deletePersons,
+  onFetchBill: paymentActions.fetchBill,
+  onLoadPerson: personActions.loadPerson,
+  onSetPayments: paymentActions.setPayments,
+  onResetPayments: paymentActions.resetPayments,
+  onResetPersons: personActions.resetPersons,
+  onUpdateName: personActions.updateName,
+  onUpdateAmount: personActions.updateAmount,
+};
 
 export default connect(
   mapState,

@@ -1,8 +1,6 @@
 // @flow
 import { Map, fromJS } from 'immutable';
-import filter from 'lodash/filter';
-import sumBy from 'lodash/sumby';
-import round from 'lodash/round';
+import { filter, sumBy, round } from 'lodash';
 
 export default (data: Map<string, *>): Map<string, *> => {
   const sorted = data.map(person => {
