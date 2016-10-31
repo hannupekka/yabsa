@@ -94,6 +94,73 @@ describe('async actions', () => {
     });
   });
 
+  it('should create an action for updating bill', () => {
+    const data = {
+      data: [
+        {
+          name: 'bob',
+          paid: '10 20'
+        },
+        {
+          name: 'bill',
+          paid: '100'
+        }
+      ]
+    };
+
+    nock(API_URL)
+      .put('/bill')
+      .reply(200, { data });
+
+    const expected = [
+      {
+        type: Payment.UPDATE_BILL,
+        payload: undefined,
+        meta: undefined
+      },
+      {
+        type: Payment.UPDATE_BILL_SUCCESS,
+        payload: {
+          data
+        },
+        meta: undefined
+      },
+    ];
+
+    const store = mockStore();
+    return store.dispatch(Payment.updateBill(id, fromJS(data)))
+    .then(() => {
+      expect(store.getActions()).toEqual(expected);
+    });
+  });
+
+  it('should create an action for deleting bill', () => {
+    nock(API_URL)
+      .delete('/bill')
+      .reply(200, { id });
+
+    const expected = [
+      {
+        type: Payment.DELETE_BILL,
+        payload: undefined,
+        meta: undefined
+      },
+      {
+        type: Payment.DELETE_BILL_SUCCESS,
+        payload: {
+          id
+        },
+        meta: undefined
+      },
+    ];
+
+    const store = mockStore();
+    return store.dispatch(Payment.deleteBill(id))
+    .then(() => {
+      expect(store.getActions()).toEqual(expected);
+    });
+  });
+
   it('should create an action for fetching bill', () => {
     const bid = '8518aac9-895b-5c61-8eec-f2cf1095fd03';
     const data = {

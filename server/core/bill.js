@@ -21,7 +21,7 @@ const createBill = ({ data, currency }) => Bill.create({ data, currency })
   });
 
 const updateBill = ({ bid, data, currency }) => Bill.update({ bid }, {
-  paid: data,
+  data,
   currency
 })
   .then(result => {
@@ -32,6 +32,7 @@ const updateBill = ({ bid, data, currency }) => Bill.update({ bid }, {
     }
 
     return {
+      bid,
       data,
       currency
     };

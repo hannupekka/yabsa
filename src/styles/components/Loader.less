@@ -1,13 +1,7 @@
 @import '~styles/main';
 
 .spinner {
-  .loading-spinner();
-  display: inline-block;
-  vertical-align: text-bottom;
-}
-
-.text {
-  color: #000;
-  display: inline-block;
-  margin-left: @padding;
+  .loading-spinner(1.75rem, @loading-spinner-color, 0.4rem);
+  display: block;
+  margin: 1rem auto;
 }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { forEach, round } from 'lodash';
 import Person from 'components/Person';
+import Loader from 'components/Loader';
 import * as personActions from 'redux/modules/person';
 import * as paymentActions from 'redux/modules/payment';
 import shareExpenses from 'utils/payments';
@@ -13,12 +14,14 @@ type Props = {
   params: Object,
   routeParams: Object,
   payments: Map,
+  requestCount: number,
   share: number,
   totalAmount: number,
   persons: Map,
   isValid: bool,
   onAddPerson: () => ActionType,
   onCreateBill: (persons: Map) => Function,
+  onDeleteBill: (bid: string) => Function,
   onDeletePerson: (id: string) => ActionType,
   onDeletePersons: () => Function,
   onFetchBill: (bid: string) => Function,
@@ -26,6 +29,7 @@ type Props = {
   onSetPayments: (payments: Map, share: number, totalAmount: number) => ActionType,
   onResetPayments: () => ActionType,
   onResetPersons: () => Function,
+  onUpdateBill: (bid: string, persons: Map) => Function,
   onUpdateName: (id: string, value: string) => ActionType,
   onUpdateAmount: (id: string, value: string) => ActionType
 };
@@ -48,6 +52,7 @@ class Index extends Component {
             this.context.router.push('/');
           } else {
             forEach(response.payload.data, person => this.props.onLoadPerson(person));
+            this.onShareExpenses();
           }
         });
       });
@@ -68,6 +73,17 @@ class Index extends Component {
     }
   }
 
+  onDeleteBill = (): void => {
+    const { routeParams: { bid } } = this.props;
+    this.props.onDeleteBill(bid).then(response => {
+      if (response.error) {
+        console.log('error');
+      } else {
+        this.context.router.replace('/');
+      }
+    });
+  }
+
   onShareExpenses = (): void => {
     const { persons } = this.props;
     const payments = shareExpenses(persons);
@@ -78,10 +94,49 @@ class Index extends Component {
     );
   }
 
-  onCreateBill = (): void => {
-    this.props.onCreateBill(this.props.persons).then(response => {
-      this.context.router.push(response.payload.bid);
-    });
+  onSaveBill = (): void => {
+    const { routeParams: { bid } } = this.props;
+
+    if (bid) {
+      this.props.onUpdateBill(bid, this.props.persons).then(response => {
+        if (response.error) {
+          console.log('error');
+        }
+      });
+    } else {
+      this.props.onCreateBill(this.props.persons).then(response => {
+        if (response.error) {
+          console.log('error');
+        } else {
+          this.context.router.push(response.payload.bid);
+        }
+      });
+    }
+  }
+
+  renderDeleteButton = (): ?ElementType => {
+    const { routeParams: { bid } } = this.props;
+
+    if (!bid) {
+      return null;
+    }
+
+    return (
+      <button onClick={this.onDeleteBill} styleName="deleteBill">
+        <i className="fa fa-trash" aria-hidden="true" />
+        Delete bill
+      </button>
+    );
+  }
+
+  renderLoader = (): ?ElementType => {
+    const { requestCount } = this.props;
+
+    if (requestCount === 0) {
+      return null;
+    }
+
+    return <Loader />;
   }
 
   renderPayments = (): ?ElementType => {
@@ -151,12 +206,12 @@ class Index extends Component {
   }
 
   renderSaveButton = (): ?ElementType => {
-    const { isValid, routeParams: { bid } } = this.props;
+    const { isValid } = this.props;
 
     return (
-      <button onClick={this.onCreateBill} disabled={!isValid} styleName="saveExpenses">
+      <button onClick={this.onSaveBill} disabled={!isValid} styleName="saveExpenses">
         <i className="fa fa-floppy-o" aria-hidden="true" />
-        { bid ? 'Update expenses' : 'Save expenses' }
+        Save expenses
       </button>
     );
   }
@@ -180,11 +235,13 @@ class Index extends Component {
               Share expenses
             </button>
             {this.renderSaveButton()}
+            {this.renderDeleteButton()}
           </div>
         </div>
         <div>
           {this.renderPayments()}
         </div>
+        {this.renderLoader()}
       </div>
     );
   }
@@ -192,6 +249,7 @@ class Index extends Component {
 
 const mapState = (state: StateType): StateType => ({
   payments: state.payment.get('payments'),
+  requestCount: state.request.get('requestCount'),
   share: state.payment.get('share'),
   totalAmount: state.payment.get('totalAmount'),
   persons: state.person.get('persons'),
@@ -202,6 +260,7 @@ const mapState = (state: StateType): StateType => ({
 const mapActions = {
   onAddPerson: personActions.addPerson,
   onCreateBill: paymentActions.createBill,
+  onDeleteBill: paymentActions.deleteBill,
   onDeletePerson: personActions.deletePerson,
   onDeletePersons: personActions.deletePersons,
   onFetchBill: paymentActions.fetchBill,
@@ -209,6 +268,7 @@ const mapActions = {
   onSetPayments: paymentActions.setPayments,
   onResetPayments: paymentActions.resetPayments,
   onResetPersons: personActions.resetPersons,
+  onUpdateBill: paymentActions.updateBill,
   onUpdateName: personActions.updateName,
   onUpdateAmount: personActions.updateAmount,
 };
