@@ -1,0 +1,47 @@
+@import '~styles/main';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  & + & {
+    margin-top: @padding;
+  }
+}
+
+.left {
+  padding: @padding;
+}
+
+.icon {
+  width: @icon__size--notification;
+}
+
+.right {
+  flex: 1;
+  padding: @padding @padding @padding 0;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.body {
+  font-style: italic;
+}
+
+// Different types of notifications.
+.success {
+  composes: wrapper;
+  .notification-color(lighten(@color__blue--light, 10%));
+}
+
+.error {
+  composes: wrapper;
+  .notification-color(@color__red);
+}

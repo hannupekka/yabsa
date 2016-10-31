@@ -1,0 +1,28 @@
+@import '~styles/main';
+
+.wrapper {
+  position: fixed;
+  top: @padding;
+  right: @padding;
+  width: 250px;
+}
+
+// Animations
+.enter {
+  animation: slideInDown @duration--enter;
+  opacity: 0.01;
+}
+
+.enter--active {
+  opacity: 1;
+  transition: all @duration--enter ease-in;
+}
+
+.leave {
+  opacity: 1;
+}
+
+.leave--active {
+  opacity: 0.01;
+  transition: opacity @duration--leave ease-out;
+}
