@@ -4,8 +4,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { forEach, round } from 'lodash';
+import Notifications from 'containers/Notifications';
 import Person from 'components/Person';
 import Loader from 'components/Loader';
+import * as notificationActions from 'redux/modules/notification';
 import * as personActions from 'redux/modules/person';
 import * as paymentActions from 'redux/modules/payment';
 import shareExpenses from 'utils/payments';
@@ -20,6 +22,7 @@ type Props = {
   persons: Map,
   isValid: bool,
   onAddPerson: () => ActionType,
+  onAddNotification: (options: NotificationOptionsType) => Function,
   onCreateBill: (persons: Map) => Function,
   onDeleteBill: (bid: string) => Function,
   onDeletePerson: (id: string) => ActionType,
@@ -77,9 +80,20 @@ class Index extends Component {
     const { routeParams: { bid } } = this.props;
     this.props.onDeleteBill(bid).then(response => {
       if (response.error) {
-        console.log('error');
+        this.props.onAddNotification({
+          title: 'Error',
+          body: 'Deleting bill failed!',
+          icon: 'fa fa-exclamation',
+          type: 'error'
+        });
       } else {
         this.context.router.replace('/');
+        this.props.onAddNotification({
+          title: 'Success',
+          body: 'Bill deleted!',
+          icon: 'fa fa-check',
+          type: 'success'
+        });
       }
     });
   }
@@ -100,15 +114,38 @@ class Index extends Component {
     if (bid) {
       this.props.onUpdateBill(bid, this.props.persons).then(response => {
         if (response.error) {
-          console.log('error');
+          this.props.onAddNotification({
+            title: 'Error',
+            body: 'Saving expenses failed!',
+            icon: 'fa fa-exclamation',
+            type: 'error'
+          });
+        } else {
+          this.props.onAddNotification({
+            title: 'Success',
+            body: 'Bill updated!',
+            icon: 'fa fa-check',
+            type: 'success'
+          });
         }
       });
     } else {
       this.props.onCreateBill(this.props.persons).then(response => {
         if (response.error) {
-          console.log('error');
+          this.props.onAddNotification({
+            title: 'Error',
+            body: 'Saving expenses failed!',
+            icon: 'fa fa-exclamation',
+            type: 'error'
+          });
         } else {
           this.context.router.push(response.payload.bid);
+          this.props.onAddNotification({
+            title: 'Success',
+            body: 'Expenses saved!',
+            icon: 'fa fa-check',
+            type: 'success'
+          });
         }
       });
     }
@@ -242,6 +279,7 @@ class Index extends Component {
           {this.renderPayments()}
         </div>
         {this.renderLoader()}
+        <Notifications />
       </div>
     );
   }
@@ -259,6 +297,7 @@ const mapState = (state: StateType): StateType => ({
 
 const mapActions = {
   onAddPerson: personActions.addPerson,
+  onAddNotification: notificationActions.addNotification,
   onCreateBill: paymentActions.createBill,
   onDeleteBill: paymentActions.deleteBill,
   onDeletePerson: personActions.deletePerson,
