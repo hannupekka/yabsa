@@ -12,14 +12,17 @@
 
 .actions {
   margin-top: @padding;
+  text-align: center;
 }
 
 .addPerson,
 .shareExpenses,
-.saveExpenses {
+.saveExpenses,
+.deleteBill {
   composes: base--button;
   display: block;
   margin: auto;
+  width: 100%;
 
   & + & {
     margin-top: @padding;
@@ -60,8 +63,10 @@
 @media @sm {
   .addPerson,
   .shareExpenses,
-  .saveExpenses {
+  .saveExpenses,
+  .deleteBill {
     display: inline-block;
+    width: auto;
 
     & + & {
       margin-left: @padding;
