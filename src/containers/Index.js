@@ -69,9 +69,17 @@ class Index extends Component {
     }
   }
 
+  onAddPerson = (): void => {
+    const { requestCount } = this.props;
+
+    if (requestCount === 0) {
+      this.props.onAddPerson();
+    }
+  }
+
   onKeyDown = (e: KeyboardEvent): void => {
-    const { isValid } = this.props;
-    if (e.key === 'Enter' && isValid) {
+    const { isValid, requestCount } = this.props;
+    if (e.key === 'Enter' && isValid && requestCount === 0) {
       this.onShareExpenses();
     }
   }
@@ -99,13 +107,16 @@ class Index extends Component {
   }
 
   onShareExpenses = (): void => {
-    const { persons } = this.props;
+    const { persons, requestCount } = this.props;
     const payments = shareExpenses(persons);
-    this.props.onSetPayments(
-      payments.get('payments'),
-      payments.get('share'),
-      payments.get('totalAmount')
-    );
+
+    if (requestCount === 0) {
+      this.props.onSetPayments(
+        payments.get('payments'),
+        payments.get('share'),
+        payments.get('totalAmount')
+      );
+    }
   }
 
   onSaveBill = (): void => {
@@ -152,14 +163,14 @@ class Index extends Component {
   }
 
   renderDeleteButton = (): ?ElementType => {
-    const { routeParams: { bid } } = this.props;
+    const { requestCount, routeParams: { bid } } = this.props;
 
     if (!bid) {
       return null;
     }
 
     return (
-      <button onClick={this.onDeleteBill} styleName="deleteBill">
+      <button onClick={this.onDeleteBill} disabled={requestCount > 0} styleName="deleteBill">
         <i className="fa fa-trash" aria-hidden="true" />
         Delete bill
       </button>
@@ -227,7 +238,7 @@ class Index extends Component {
       return (
         <Person
           key={person.get('id')}
-          onAddPerson={this.props.onAddPerson}
+          onAddPerson={this.onAddPerson}
           onDeletePerson={this.props.onDeletePerson}
           onUpdateName={this.props.onUpdateName}
           onUpdateAmount={this.props.onUpdateAmount}
@@ -241,10 +252,14 @@ class Index extends Component {
   }
 
   renderSaveButton = (): ?ElementType => {
-    const { isValid } = this.props;
+    const { isValid, requestCount } = this.props;
 
     return (
-      <button onClick={this.onSaveBill} disabled={!isValid} styleName="saveExpenses">
+      <button
+        onClick={this.onSaveBill}
+        disabled={!isValid || requestCount > 0}
+        styleName="saveExpenses"
+      >
         <i className="fa fa-floppy-o" aria-hidden="true" />
         Save expenses
       </button>
@@ -252,7 +267,7 @@ class Index extends Component {
   }
 
   render() {
-    const { isValid } = this.props;
+    const { isValid, requestCount } = this.props;
     return (
       <div>
         <div styleName="persons" onKeyDown={this.onKeyDown}>
@@ -261,11 +276,19 @@ class Index extends Component {
             Protip: you can enter multiple amounts for person by separating them by space!
           </div>
           <div styleName="actions">
-            <button onClick={this.props.onAddPerson} styleName="addPerson">
+            <button
+              onClick={this.props.onAddPerson}
+              disabled={requestCount > 0}
+              styleName="addPerson"
+            >
               <i className="fa fa-user-plus" aria-hidden="true" />
               Add person
             </button>
-            <button onClick={this.onShareExpenses} disabled={!isValid} styleName="shareExpenses">
+            <button
+              onClick={this.onShareExpenses}
+              disabled={!isValid || requestCount > 0}
+              styleName="shareExpenses"
+            >
               <i className="fa fa-calculator" aria-hidden="true" />
               Share expenses
             </button>
