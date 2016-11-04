@@ -180,11 +180,7 @@ class Index extends Component {
   renderLoader = (): ?ElementType => {
     const { requestCount } = this.props;
 
-    if (requestCount === 0) {
-      return null;
-    }
-
-    return <Loader />;
+    return <Loader requestCount={requestCount} />;
   }
 
   renderPayments = (): ?ElementType => {
