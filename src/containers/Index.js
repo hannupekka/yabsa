@@ -46,6 +46,9 @@ class Index extends Component {
   }
 
   componentDidMount = (): void => {
+    // Attach event listener.
+    window.addEventListener('keydown', this.onKeyDown);
+
     const { routeParams: { bid } } = this.props;
 
     if (bid) {
@@ -69,6 +72,11 @@ class Index extends Component {
     }
   }
 
+  componentWillUnmount = (): void => {
+    // Detach event listeners.
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
   onAddPerson = (): void => {
     const { requestCount } = this.props;
 
@@ -77,11 +85,26 @@ class Index extends Component {
     }
   }
 
-  onKeyDown = (e: KeyboardEvent): void => {
+  onKeyDown = (e: KeyboardEvent): bool => {
     const { isValid, requestCount } = this.props;
+
+    if (!isValid || requestCount > 0) {
+      return false;
+    }
+
     if (e.key === 'Enter' && isValid && requestCount === 0) {
       this.onShareExpenses();
     }
+
+    if (event.ctrlKey || event.metaKey) {
+      // Handle CTRL+s combinations.
+      if (String.fromCharCode(e.which).toLowerCase() === 's') {
+        e.preventDefault();
+        this.onSaveBill();
+      }
+    }
+
+    return true;
   }
 
   onDeleteBill = (): void => {
