@@ -5,8 +5,12 @@ import { pure } from 'recompose';
 import type { Component } from 'recompose';
 import CSSModules from 'react-css-modules';
 
-const Loader: Component<{}> = (): ElementType => {
-  return <div styleName="spinner"></div>;
+type Props = {
+  requestCount: number
+}
+
+const Loader: Component<Props> = (props: Props): ElementType => {
+  return <div styleName={props.requestCount === 0 ? 'spinner' : 'spinner--visible'}></div>;
 };
 
 export default pure(CSSModules(Loader, styles));

@@ -3,5 +3,13 @@
 .spinner {
   .loading-spinner(1.75rem, @loading-spinner-color, 0.4rem);
   display: block;
+  opacity: 0;
   margin: @padding auto;
+  transition: all 150ms linear;
+}
+
+.spinner--visible {
+  composes: spinner;
+  opacity: 1;
+  transition-delay: 1300ms;
 }
