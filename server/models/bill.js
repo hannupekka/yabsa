@@ -19,6 +19,8 @@ const BillSchema = new Schema({
     type: String,
     required: true
   }
+}, {
+  timestamps: true
 });
 
 // Export schema so we can utilize it in other places.
