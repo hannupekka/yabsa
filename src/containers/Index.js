@@ -210,13 +210,11 @@ class Index extends Component {
 
     return (
       <div>
-        <div>
-          <div styleName="totals">
-            Total is <b>{totalAmount} EUR</b> of which each participants share is <b>{share} EUR</b>
-          </div>
-          <div styleName="payments">
-            {paymentList}
-          </div>
+        <div styleName="totals">
+          Total is <b>{totalAmount} EUR</b> of which each participants share is <b>{share} EUR</b>
+        </div>
+        <div styleName="payments">
+          {paymentList}
         </div>
       </div>
     );
@@ -275,9 +273,7 @@ class Index extends Component {
             {this.renderDeleteButton()}
           </div>
         </div>
-        <div>
-          {this.renderPayments()}
-        </div>
+        {this.renderPayments()}
         {this.renderLoader()}
         <Notifications />
       </div>
