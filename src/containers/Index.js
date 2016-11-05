@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { forEach, round } from 'lodash';
 import Notifications from 'containers/Notifications';
+import Confirm from 'components/Confirm';
 import Person from 'components/Person';
 import Loader from 'components/Loader';
 import * as notificationActions from 'redux/modules/notification';
@@ -37,12 +38,25 @@ type Props = {
   onUpdateAmount: (id: string, value: string) => ActionType
 };
 
+type State = {
+  showConfirm: bool
+}
+
 // eslint-disable-next-line
 class Index extends Component {
   props: Props;
+  state: State;
 
   static contextTypes = {
     router: React.PropTypes.object.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showConfirm: false
+    };
   }
 
   componentDidMount = (): void => {
@@ -85,29 +99,9 @@ class Index extends Component {
     }
   }
 
-  onKeyDown = (e: KeyboardEvent): bool => {
-    const { isValid, requestCount } = this.props;
-
-    if (!isValid || requestCount > 0) {
-      return false;
-    }
-
-    if (e.key === 'Enter' && isValid && requestCount === 0) {
-      this.onShareExpenses();
-    }
-
-    if (event.ctrlKey || event.metaKey) {
-      // Handle CTRL+s combinations.
-      if (String.fromCharCode(e.which).toLowerCase() === 's') {
-        e.preventDefault();
-        this.onSaveBill();
-      }
-    }
-
-    return true;
-  }
-
   onDeleteBill = (): void => {
+    this.onHideConfirm();
+
     const { routeParams: { bid } } = this.props;
     this.props.onDeleteBill(bid).then(response => {
       if (response.error) {
@@ -129,17 +123,32 @@ class Index extends Component {
     });
   }
 
-  onShareExpenses = (): void => {
-    const { persons, requestCount } = this.props;
-    const payments = shareExpenses(persons);
+  onHideConfirm = (): void => {
+    this.setState({
+      showConfirm: false
+    });
+  }
 
-    if (requestCount === 0) {
-      this.props.onSetPayments(
-        payments.get('payments'),
-        payments.get('share'),
-        payments.get('totalAmount')
-      );
+  onKeyDown = (e: KeyboardEvent): bool => {
+    const { isValid, requestCount } = this.props;
+
+    if (!isValid || requestCount > 0) {
+      return false;
     }
+
+    if (e.key === 'Enter' && isValid && requestCount === 0) {
+      this.onShareExpenses();
+    }
+
+    if (event.ctrlKey || event.metaKey) {
+      // Handle CTRL+s combinations.
+      if (String.fromCharCode(e.which).toLowerCase() === 's') {
+        e.preventDefault();
+        this.onSaveBill();
+      }
+    }
+
+    return true;
   }
 
   onSaveBill = (): void => {
@@ -185,6 +194,25 @@ class Index extends Component {
     }
   }
 
+  onShareExpenses = (): void => {
+    const { persons, requestCount } = this.props;
+    const payments = shareExpenses(persons);
+
+    if (requestCount === 0) {
+      this.props.onSetPayments(
+        payments.get('payments'),
+        payments.get('share'),
+        payments.get('totalAmount')
+      );
+    }
+  }
+
+  onShowConfirm = (): void => {
+    this.setState({
+      showConfirm: true
+    });
+  }
+
   renderDeleteButton = (): ?ElementType => {
     const { requestCount, routeParams: { bid } } = this.props;
 
@@ -193,7 +221,7 @@ class Index extends Component {
     }
 
     return (
-      <button onClick={this.onDeleteBill} disabled={requestCount > 0} styleName="deleteBill">
+      <button onClick={this.onShowConfirm} disabled={requestCount > 0} styleName="deleteBill">
         <i className="fa fa-trash" aria-hidden="true" />
         Delete bill
       </button>
@@ -287,6 +315,8 @@ class Index extends Component {
 
   render() {
     const { isValid, requestCount } = this.props;
+    const { showConfirm } = this.state;
+
     return (
       <div>
         <div styleName="persons" onKeyDown={this.onKeyDown}>
@@ -317,6 +347,11 @@ class Index extends Component {
         </div>
         {this.renderPayments()}
         {this.renderLoader()}
+        <Confirm
+          isVisible={showConfirm}
+          onConfirm={this.onDeleteBill}
+          onCancel={this.onHideConfirm}
+        />
         <Notifications />
       </div>
     );
