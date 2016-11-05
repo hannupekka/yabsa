@@ -1,0 +1,49 @@
+@import '~styles/main';
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: @padding * 2;
+}
+
+.content {
+  background: #fff;
+  display: inline-block;
+  text-align: center;
+  padding: @padding * 2;
+}
+
+.text {
+  margin-bottom: @padding;
+}
+
+.button {
+  composes: base--button;
+  display: block;
+  margin: auto;
+  width: 100%;
+
+  & + & {
+    margin-top: @padding;
+  }
+}
+
+@media @sm {
+  .button {
+    display: inline-block;
+    width: auto;
+
+    & + & {
+      margin-left: @padding;
+      margin-top: 0;
+    }
+  }
+}
