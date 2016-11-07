@@ -31,14 +31,10 @@ const Person: Component<Props> = (props: Props): ElementType => {
 
   const onUpdateAmount = (e: InputEvent): void => {
     const value = e.target.value;
+    const matches = value.match(/^$|^((\d+[,.]?\d*) ?)+/g);
 
-    if (value.match(/^[0-9., ]*$/)) {
-      const sanitizedValue =
-        value
-        .replace(/,/g, '.')
-        .replace(/\.+/g, '.')
-        .replace(/ +/g, ' ')
-        .replace(/^ /, '');
+    if (matches) {
+      const sanitizedValue = matches[0].replace(/,/g, '.');
       props.onUpdateAmount(props.id, sanitizedValue);
     }
   };
