@@ -13,7 +13,7 @@ export default (data: Map<string, *>): Map<string, *> => {
     });
   }).sortBy(person => person.get('amount')).reverse();
 
-  const totalAmount = sorted.reduce((total, person) => total + person.get('amount'), 0);
+  const totalAmount = round(sorted.reduce((total, person) => total + person.get('amount'), 0), 2);
   const share = round((totalAmount / sorted.size), 2);
 
   let payments = Map({});
