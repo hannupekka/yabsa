@@ -228,6 +228,22 @@ class Index extends Component {
     );
   }
 
+  renderFooter = (): ElementType => {
+    return (
+      <div styleName="footer">
+        <a
+          styleName="project"
+          href="https://github.com/hannupekka/yabsa"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Check out this project in GitHub
+          <i className="fa fa-github" aria-hidden="true"></i>
+        </a>
+      </div>
+    );
+  }
+
   renderLoader = (): ?ElementType => {
     const { requestCount } = this.props;
 
@@ -347,6 +363,7 @@ class Index extends Component {
         </div>
         {this.renderPayments()}
         {this.renderLoader()}
+        {this.renderFooter()}
         <Confirm
           isVisible={showConfirm}
           onConfirm={this.onDeleteBill}

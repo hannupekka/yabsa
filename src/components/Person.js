@@ -55,14 +55,19 @@ const Person: Component<Props> = (props: Props): ElementType => {
   };
 
   const renderDeleteButton = (): ?ElementType => {
-    const { hasMultiplePersons } = props;
+    const { name, hasMultiplePersons } = props;
 
     if (!hasMultiplePersons) {
       return null;
     }
 
     return (
-      <button styleName="deletePerson" tabIndex="-1" onClick={onDeletePerson}>
+      <button
+        styleName="deletePerson"
+        title={`Remove ${name}`}
+        tabIndex="-1"
+        onClick={onDeletePerson}
+      >
         <i className="fa fa-trash" aria-hidden="true" />
       </button>
     );
