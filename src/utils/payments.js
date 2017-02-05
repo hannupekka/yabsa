@@ -3,25 +3,39 @@ import { Map, fromJS } from 'immutable';
 import { filter, sumBy, round } from 'lodash';
 
 export default (data: Map<string, *>): Map<string, *> => {
+  if (data.isEmpty()) {
+    return fromJS({
+      payments: {},
+      share: 0,
+      totalAmount: 0
+    });
+  }
+
   const sorted = data.map(person => {
     const personAmounts =
       filter(person.get('amount').split(' '), amount => parseFloat(amount));
     return Map({
       id: person.get('id'),
       name: person.get('name'),
-      amount: round(sumBy(personAmounts, amount => Number(amount)), 2)
+      amount: round(sumBy(personAmounts, amount => Number(amount)), 3)
     });
   }).sortBy(person => person.get('amount')).reverse();
 
-  const totalAmount = round(sorted.reduce((total, person) => total + person.get('amount'), 0), 2);
-  const share = round((totalAmount / sorted.size), 2);
+  const totalAmount = round(sorted.reduce((total, person) => total + person.get('amount'), 0), 3);
+  const share = round((totalAmount / sorted.size), 3);
 
   let payments = Map({});
   let paymentsLeft = Map({});
 
   sorted.forEach(person => {
     const source = person.get('id');
-    paymentsLeft = paymentsLeft.set(source, round(share - person.get('amount'), 2));
+    const left = share - person.get('amount');
+    paymentsLeft = paymentsLeft.set(
+      source,
+      left < 0
+        ? -round(Math.abs(left), 3)
+        : round(left, 3)
+    );
 
     while (paymentsLeft.get(source) > 0) {
       if (!payments.get(source)) {
@@ -44,7 +58,7 @@ export default (data: Map<string, *>): Map<string, *> => {
         payments = payments.updateIn([source, 'to'], to => to.push(
           fromJS({
             name: sorted.getIn([target, 'name']),
-            amount
+            amount: round(amount, 2)
           })
         ));
       } else {
@@ -56,6 +70,6 @@ export default (data: Map<string, *>): Map<string, *> => {
   return Map({
     payments,
     totalAmount,
-    share
+    share: round(share, 2)
   });
 };
