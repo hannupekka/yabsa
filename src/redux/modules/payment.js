@@ -3,6 +3,7 @@ import { fromJS } from 'immutable';
 import prepareApiMiddlewareRequest from 'utils/request';
 import { API_URL } from 'constants/config';
 
+export const UPDATE_DESCRIPTION = 'yabsa/payment/UPDATE_DESCRIPTION';
 export const SET_PAYMENTS = 'yabsa/payment/SET_PAYMENTS';
 export const RESET_PAYMENTS = 'yabsa/payment/RESET_PAYMENTS';
 export const CREATE_BILL = 'yabsa/payment/CREATE_BILL';
@@ -18,6 +19,13 @@ export const FETCH_BILL = 'yabsa/payment/FETCH_BILL';
 export const FETCH_BILL_SUCCESS = 'yabsa/payment/FETCH_BILL_SUCCESS';
 export const FETCH_BILL_FAILURE = 'yabsa/payment/FETCH_BILL_FAILURE';
 
+export const updateDescription = (description: string): ActionType => ({
+  type: UPDATE_DESCRIPTION,
+  payload: {
+    description
+  }
+});
+
 export const setPayments = (payments: Map, share: number, totalAmount: number): ActionType => ({
   type: SET_PAYMENTS,
   payload: {
@@ -32,12 +40,13 @@ export const resetPayments = (): ActionType => ({
   payload: {}
 });
 
-export const createBill = (persons: Map): ApiMiddlewareRequestType => {
+export const createBill = (description: string, persons: Map): ApiMiddlewareRequestType => {
   return prepareApiMiddlewareRequest({
     endpoint: `${API_URL}/bill`,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
+      description,
       data: persons.map(person => person.delete('id')).toArray(),
       currency: 'EUR'
     }),
@@ -49,23 +58,25 @@ export const createBill = (persons: Map): ApiMiddlewareRequestType => {
   });
 };
 
-export const updateBill = (bid: string, persons: Map): ApiMiddlewareRequestType => {
-  return prepareApiMiddlewareRequest({
-    endpoint: `${API_URL}/bill`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      bid,
-      data: persons.map(person => person.delete('id')).toArray(),
-      currency: 'EUR'
-    }),
-    types: [
-      UPDATE_BILL,
-      UPDATE_BILL_SUCCESS,
-      UPDATE_BILL_FAILURE
-    ]
-  });
-};
+export const updateBill =
+  (bid: string, description: string, persons: Map): ApiMiddlewareRequestType => {
+    return prepareApiMiddlewareRequest({
+      endpoint: `${API_URL}/bill`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        bid,
+        description,
+        data: persons.map(person => person.delete('id')).toArray(),
+        currency: 'EUR'
+      }),
+      types: [
+        UPDATE_BILL,
+        UPDATE_BILL_SUCCESS,
+        UPDATE_BILL_FAILURE
+      ]
+    });
+  };
 
 export const deleteBill = (bid: string): ApiMiddlewareRequestType => {
   return prepareApiMiddlewareRequest({
@@ -94,6 +105,7 @@ export const fetchBill = (bid: string): ApiMiddlewareRequestType => {
 };
 
 export const initialState = fromJS({
+  description: '',
   payments: {},
   share: 0,
   totalAmount: 0
@@ -101,6 +113,8 @@ export const initialState = fromJS({
 
 export default function reducer(state: StateType = initialState, action: ActionType): StateType {
   switch (action.type) {
+    case UPDATE_DESCRIPTION:
+      return state.set('description', action.payload.description);
     case SET_PAYMENTS:
       return state.merge({
         payments: action.payload.payments,

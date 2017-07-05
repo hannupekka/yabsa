@@ -14,13 +14,14 @@ const getBill = bid => Bill.findOne({ bid })
     throw err;
   });
 
-const createBill = ({ data, currency }) => Bill.create({ data, currency })
+const createBill = ({ description, data, currency }) => Bill.create({ description, data, currency })
   .then(bill => bill)
   .catch(err => {
     throw err;
   });
 
-const updateBill = ({ bid, data, currency }) => Bill.update({ bid }, {
+const updateBill = ({ bid, description, data, currency }) => Bill.update({ bid }, {
+  description,
   data,
   currency
 })
@@ -33,6 +34,7 @@ const updateBill = ({ bid, data, currency }) => Bill.update({ bid }, {
 
     return {
       bid,
+      description,
       data,
       currency
     };

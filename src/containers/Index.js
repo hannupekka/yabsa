@@ -16,6 +16,7 @@ import shareExpenses from 'utils/payments';
 type Props = {
   params: Object,
   routeParams: Object,
+  description: string,
   payments: Map,
   requestCount: number,
   share: number,
@@ -24,7 +25,7 @@ type Props = {
   isValid: bool,
   onAddPerson: () => ActionType,
   onAddNotification: (options: NotificationOptionsType) => Function,
-  onCreateBill: (persons: Map) => Function,
+  onCreateBill: (description: string, persons: Map) => Function,
   onDeleteBill: (bid: string) => Function,
   onDeletePerson: (id: string) => ActionType,
   onDeletePersons: () => Function,
@@ -33,7 +34,8 @@ type Props = {
   onSetPayments: (payments: Map, share: number, totalAmount: number) => ActionType,
   onResetPayments: () => ActionType,
   onResetPersons: () => Function,
-  onUpdateBill: (bid: string, persons: Map) => Function,
+  onUpdateBill: (bid: string, description: string, persons: Map) => Function,
+  onUpdateDescription: (description: string) => ActionType,
   onUpdateName: (id: string, value: string) => ActionType,
   onUpdateAmount: (id: string, value: string) => ActionType
 };
@@ -72,6 +74,7 @@ class Index extends Component {
             this.context.router.push('/');
           } else {
             forEach(response.payload.data, person => this.props.onLoadPerson(person));
+            this.props.onUpdateDescription(response.payload.description);
             this.onShareExpenses();
           }
         });
@@ -89,6 +92,11 @@ class Index extends Component {
   componentWillUnmount = (): void => {
     // Detach event listeners.
     window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onUpdateDescription = (e: InputEvent) => {
+    const description = e.target.value;
+    this.props.onUpdateDescription(description);
   }
 
   onAddPerson = (): void => {
@@ -152,10 +160,10 @@ class Index extends Component {
   }
 
   onSaveBill = (): void => {
-    const { routeParams: { bid } } = this.props;
+    const { routeParams: { bid }, description } = this.props;
 
     if (bid) {
-      this.props.onUpdateBill(bid, this.props.persons).then(response => {
+      this.props.onUpdateBill(bid, description, this.props.persons).then(response => {
         if (response.error) {
           this.props.onAddNotification({
             title: 'Error',
@@ -173,7 +181,7 @@ class Index extends Component {
         }
       });
     } else {
-      this.props.onCreateBill(this.props.persons).then(response => {
+      this.props.onCreateBill(description, this.props.persons).then(response => {
         if (response.error) {
           this.props.onAddNotification({
             title: 'Error',
@@ -330,11 +338,20 @@ class Index extends Component {
   }
 
   render() {
-    const { isValid, requestCount } = this.props;
+    const { isValid, requestCount, description } = this.props;
     const { showConfirm } = this.state;
 
     return (
       <div>
+        <div styleName="description">
+          <input
+            type="text"
+            placeholder="Description"
+            styleName="input"
+            value={description}
+            onChange={this.onUpdateDescription}
+          />
+        </div>
         <div styleName="persons" onKeyDown={this.onKeyDown}>
           {this.renderPersons()}
           <div styleName="help">
@@ -376,6 +393,7 @@ class Index extends Component {
 }
 
 const mapState = (state: StateType): StateType => ({
+  description: state.payment.get('description'),
   payments: state.payment.get('payments'),
   requestCount: state.request.get('requestCount'),
   share: state.payment.get('share'),
@@ -394,6 +412,7 @@ const mapActions = {
   onDeletePersons: personActions.deletePersons,
   onFetchBill: paymentActions.fetchBill,
   onLoadPerson: personActions.loadPerson,
+  onUpdateDescription: paymentActions.updateDescription,
   onSetPayments: paymentActions.setPayments,
   onResetPayments: paymentActions.resetPayments,
   onResetPersons: personActions.resetPersons,

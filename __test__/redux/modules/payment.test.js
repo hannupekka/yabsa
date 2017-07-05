@@ -28,6 +28,18 @@ const payments = fromJS({
 });
 
 describe('actions', () => {
+  it('should create an action for setting description', () => {
+    const description = 'foobar';
+    const expected = {
+      type: Payment.UPDATE_DESCRIPTION,
+      payload: {
+        description
+      }
+    };
+
+    expect(Payment.updateDescription(description)).toEqual(expected);
+  });
+
   it('should create an action for setting payments', () => {
     const expected = {
       type: Payment.SET_PAYMENTS,
@@ -55,6 +67,7 @@ describe('async actions', () => {
   });
 
   it('should create an action for creating bill', () => {
+    const description = 'foobar';
     const data = {
       data: [
         {
@@ -70,7 +83,7 @@ describe('async actions', () => {
 
     nock(API_URL)
       .post('/bill')
-      .reply(200, { data });
+      .reply(200, { description, data });
 
     const expected = [
       {
@@ -81,6 +94,7 @@ describe('async actions', () => {
       {
         type: Payment.CREATE_BILL_SUCCESS,
         payload: {
+          description,
           data
         },
         meta: undefined
@@ -88,13 +102,14 @@ describe('async actions', () => {
     ];
 
     const store = mockStore();
-    return store.dispatch(Payment.createBill(fromJS(data)))
+    return store.dispatch(Payment.createBill(description, fromJS(data)))
     .then(() => {
       expect(store.getActions()).toEqual(expected);
     });
   });
 
   it('should create an action for updating bill', () => {
+    const description = 'foobar';
     const data = {
       data: [
         {
@@ -110,7 +125,7 @@ describe('async actions', () => {
 
     nock(API_URL)
       .put('/bill')
-      .reply(200, { data });
+      .reply(200, { description, data });
 
     const expected = [
       {
@@ -121,6 +136,7 @@ describe('async actions', () => {
       {
         type: Payment.UPDATE_BILL_SUCCESS,
         payload: {
+          description,
           data
         },
         meta: undefined
@@ -128,7 +144,7 @@ describe('async actions', () => {
     ];
 
     const store = mockStore();
-    return store.dispatch(Payment.updateBill(id, fromJS(data)))
+    return store.dispatch(Payment.updateBill(id, description, fromJS(data)))
     .then(() => {
       expect(store.getActions()).toEqual(expected);
     });
@@ -209,6 +225,22 @@ describe('reducer', () => {
     expect(
       reducer(undefined, {})
     ).toEqual(Payment.initialState);
+  });
+
+  it('should handle UPDATE_DESCRIPTION', () => {
+    const description = 'foobar';
+    const action = {
+      type: Payment.UPDATE_DESCRIPTION,
+      payload: {
+        description
+      }
+    };
+
+    const expected = Payment.initialState.set('description', description);
+
+    expect(
+      reducer(Payment.initialState, action)
+    ).toEqual(expected);
   });
 
   it('should handle SET_PAYMENTS', () => {

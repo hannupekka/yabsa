@@ -11,6 +11,9 @@ const BillSchema = new Schema({
     default: Guid.raw(),
     index: true
   },
+  description: {
+    type: String
+  },
   data: {
     type: Array,
     required: true
