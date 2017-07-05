@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CSSModules from 'react-css-modules';
 import { forEach, round } from 'lodash';
+import { Helmet } from 'react-helmet';
 import Notifications from 'containers/Notifications';
 import Confirm from 'components/Confirm';
 import Person from 'components/Person';
@@ -343,6 +344,9 @@ class Index extends Component {
 
     return (
       <div>
+        <Helmet>
+          <title>YABSA - {description || 'Yet another bill splitting app'}</title>
+        </Helmet>
         <div styleName="description">
           <input
             type="text"
