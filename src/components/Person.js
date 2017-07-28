@@ -1,7 +1,7 @@
 // @flow
 import styles from 'styles/components/Person';
 import React from 'react';
-import { pure } from 'recompose';
+import { onlyUpdateForKeys } from 'recompose';
 import type { Component } from 'recompose';
 import { sumBy, filter, round } from 'lodash';
 import CSSModules from 'react-css-modules';
@@ -10,7 +10,6 @@ type Props = {
   id: string,
   name: string,
   amount: string,
-  isFirstPerson: bool,
   isLastPerson: bool,
   hasMultiplePersons: bool,
   onAddPerson: () => ActionType,
@@ -41,6 +40,8 @@ const Person: Component<Props> = (props: Props): ElementType => {
 
   const onKeyDown = (e: KeyboardEvent): void => {
     if (e.key === 'Tab' && props.isLastPerson) {
+      // Prevent tab skipping over autofocused name field.
+      e.preventDefault();
       props.onAddPerson();
     }
   };
@@ -78,10 +79,10 @@ const Person: Component<Props> = (props: Props): ElementType => {
       <input
         type="text"
         placeholder="Name"
-        styleName="input"
+        styleName={props.name === '' ? 'input--invalid' : 'input'}
         value={props.name}
-        autoFocus={props.isFirstPerson}
         onChange={onUpdateName}
+        autoFocus
       />
       <input
         type="text"
@@ -99,4 +100,4 @@ const Person: Component<Props> = (props: Props): ElementType => {
   );
 };
 
-export default pure(CSSModules(Person, styles));
+export default onlyUpdateForKeys(['name', 'amount'])(CSSModules(Person, styles));

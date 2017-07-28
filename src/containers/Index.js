@@ -314,7 +314,6 @@ class Index extends Component {
           onDeletePerson={this.props.onDeletePerson}
           onUpdateName={this.props.onUpdateName}
           onUpdateAmount={this.props.onUpdateAmount}
-          isFirstPerson={i === 0}
           isLastPerson={i === persons.size - 1}
           hasMultiplePersons={persons.size > 1}
           {...person.toJS()}
@@ -363,7 +362,7 @@ class Index extends Component {
           </div>
           <div styleName="actions">
             <button
-              onClick={this.props.onAddPerson}
+              onClick={this.onAddPerson}
               disabled={requestCount > 0}
               styleName="addPerson"
             >
@@ -403,8 +402,7 @@ const mapState = (state: StateType): StateType => ({
   share: state.payment.get('share'),
   totalAmount: state.payment.get('totalAmount'),
   persons: state.person.get('persons'),
-  isValid: state.person.get('persons')
-    .every(person => person.get('name') !== '' && person.get('amount') !== '')
+  isValid: state.person.get('persons').every(person => person.get('name') !== '')
 });
 
 const mapActions = {
