@@ -64,6 +64,7 @@ const Person: Component<Props> = (props: Props): ElementType => {
 
     return (
       <button
+        className="person__delete"
         styleName="deletePerson"
         title={`Remove ${name}`}
         tabIndex="-1"
@@ -75,10 +76,11 @@ const Person: Component<Props> = (props: Props): ElementType => {
   };
 
   return (
-    <div styleName="person">
+    <div className="person" styleName="person">
       <input
         type="text"
         placeholder="Name"
+        className="person__name"
         styleName={props.name === '' ? 'input--invalid' : 'input'}
         value={props.name}
         onChange={onUpdateName}
@@ -87,12 +89,13 @@ const Person: Component<Props> = (props: Props): ElementType => {
       <input
         type="text"
         placeholder="Paid amount"
+        className="person__amount"
         styleName="input"
         value={props.amount}
         onChange={onUpdateAmount}
         onKeyDown={onKeyDown}
       />
-      <div styleName="total">
+      <div className="person__total" styleName="total">
         {sumAmount()} EUR
         {renderDeleteButton()}
       </div>

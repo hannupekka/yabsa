@@ -230,7 +230,12 @@ class Index extends Component {
     }
 
     return (
-      <button onClick={this.onShowConfirm} disabled={requestCount > 0} styleName="deleteBill">
+      <button
+        id="delete"
+        onClick={this.onShowConfirm}
+        disabled={requestCount > 0}
+        styleName="deleteBill"
+      >
         <i className="fa fa-trash" aria-hidden="true" />
         Delete bill
       </button>
@@ -266,19 +271,21 @@ class Index extends Component {
       return null;
     } else if (payments.isEmpty() && totalAmount !== 0) {
       return (
-        <div styleName="payments">All participants have paid equal amount - no need to share!</div>
+        <div id="totals" styleName="payments">
+          All participants have paid equal amount - no need to share!
+        </div>
       );
     }
 
     const paymentList = payments.map((payment, id) => {
       return (
-        <div key={id} styleName="payment">
+        <div key={id} className="payment" styleName="payment">
           <b>{payment.get('from')}</b> pays:
           <div styleName="to">
             {
               payment.get('to').map((to, i) => {
                 return (
-                  <div key={i} styleName="target">
+                  <div key={i} className="target" styleName="target">
                     {round(to.get('amount'), 2)} EUR
                     <i className="fa fa-long-arrow-right" aria-hidden="true" />
                     {to.get('name')}
@@ -293,10 +300,10 @@ class Index extends Component {
 
     return (
       <div>
-        <div styleName="totals">
+        <div id="totals" styleName="totals">
           Total is <b>{totalAmount} EUR</b> of which each participants share is <b>{share} EUR</b>
         </div>
-        <div styleName="payments">
+        <div id="payments" styleName="payments">
           {paymentList}
         </div>
       </div>
@@ -327,6 +334,7 @@ class Index extends Component {
 
     return (
       <button
+        id="save"
         onClick={this.onSaveBill}
         disabled={!isValid || requestCount > 0}
         styleName="saveExpenses"
@@ -348,6 +356,7 @@ class Index extends Component {
         </Helmet>
         <div styleName="description">
           <input
+            id="description"
             type="text"
             placeholder="Description"
             styleName="input"
@@ -362,6 +371,7 @@ class Index extends Component {
           </div>
           <div styleName="actions">
             <button
+              id="add"
               onClick={this.onAddPerson}
               disabled={requestCount > 0}
               styleName="addPerson"
@@ -370,6 +380,7 @@ class Index extends Component {
               Add person
             </button>
             <button
+              id="share"
               onClick={this.onShareExpenses}
               disabled={!isValid || requestCount > 0}
               styleName="shareExpenses"

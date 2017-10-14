@@ -31,7 +31,7 @@ class Notifications extends Component {
 
   render(): ElementType {
     return (
-      <div styleName="wrapper">
+      <div id="notifications" styleName="wrapper">
         <ReactCSSTransitionGroup
           transitionEnterTimeout={150}
           transitionLeaveTimeout={150}

@@ -15,7 +15,9 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "npm test -- --watch",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
   },
   "author": "Hannu-Pekka Heinäjärvi <hannupekka@gmail.com>",
   "license": "MIT",
@@ -82,6 +84,7 @@
     "babel-eslint": "^7.0.0",
     "babel-jest": "^15.0.0",
     "ban-sensitive-files": "^1.8.3",
+    "cypress": "^1.0.1",
     "eslint": "^3.3.1",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-import-resolver-webpack": "^0.6.0",
@@ -111,7 +114,7 @@
   ],
   "engines": {
     "npm": "4.1.2",
-    "node": "8.1.4"
+    "node": "8.3.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [

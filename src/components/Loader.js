@@ -10,7 +10,12 @@ type Props = {
 }
 
 const Loader: Component<Props> = (props: Props): ElementType => {
-  return <div styleName={props.requestCount === 0 ? 'spinner' : 'spinner--visible'}></div>;
+  return (
+    <div
+      id="loader"
+      styleName={props.requestCount === 0 ? 'spinner' : 'spinner--visible'}
+    />
+  );
 };
 
 export default pure(CSSModules(Loader, styles));

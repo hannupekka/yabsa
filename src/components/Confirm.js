@@ -13,14 +13,14 @@ type Props = {
 
 const Confirm: Component<Props> = (props: Props): ?ElementType => {
   return props.isVisible ? (
-    <div styleName="wrapper">
+    <div id="confirm" styleName="wrapper">
       <div styleName="content">
         <div styleName="text">Are you sure you want to delete this bill?</div>
-        <button styleName="button" onClick={props.onConfirm}>
+        <button id="confirm--yes" styleName="button" onClick={props.onConfirm}>
           <i className="fa fa-check" aria-hidden="true" />
           Yes, delete it!
         </button>
-        <button styleName="button" onClick={props.onCancel}>
+        <button id="confirm--no" styleName="button" onClick={props.onCancel}>
           <i className="fa fa-ban" aria-hidden="true" />
           No, cancel!
         </button>

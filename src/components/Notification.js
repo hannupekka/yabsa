@@ -29,7 +29,7 @@ const Notification: Component<Props> = (props: Props): ElementType => {
 
   const { title, body, type } = props.data.toJS();
   return (
-    <div styleName={type} onClick={onDismiss}>
+    <div className="notification" styleName={type} onClick={onDismiss}>
       <div styleName="left">
         <div styleName="icon">{renderIcon()}</div>
       </div>

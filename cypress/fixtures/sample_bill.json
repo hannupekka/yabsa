@@ -1,0 +1,19 @@
+{
+  "_id": "59e0a79bdfaba000041f80ce",
+  "updatedAt": "2017-10-13T11:46:35.089Z",
+  "createdAt": "2017-10-13T11:46:35.089Z",
+  "description": "sample bill",
+  "currency": "EUR",
+  "__v": 0,
+  "data": [
+    {
+      "amount": "10",
+      "name": "bob"
+    },
+    {
+      "amount": "20",
+      "name": "mary"
+    }
+  ],
+  "bid": "5f301c29-15ca-23c0-29e0-cda902eb09af"
+}
