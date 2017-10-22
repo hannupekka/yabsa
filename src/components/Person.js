@@ -100,4 +100,5 @@ const Person: Component<Props> = (props: Props): ElementType => {
   );
 };
 
-export default onlyUpdateForKeys(['name', 'amount'])(CSSModules(Person, styles));
+export default
+  onlyUpdateForKeys(['name', 'amount', 'hasMultiplePersons'])(CSSModules(Person, styles));
