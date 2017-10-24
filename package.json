@@ -12,7 +12,7 @@
     "flow": "flow check",
     "flow:trace": "flow check --traces 5",
     "lint": "./tools/flow_annotation_check.sh && eslint src",
-    "test": "jest",
+    "test": "jest __test__",
     "test:coverage": "jest --coverage",
     "test:watch": "npm test -- --watch",
     "postinstall": "npm run build",
