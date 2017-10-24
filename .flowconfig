@@ -2,6 +2,7 @@
 .*/node_modules/fbjs/.*
 .*/node_modules/reqwest/.*
 .*/node_modules/babel-plugin-flow-react-proptypes/.*
+.*/node_modules/cypress/dist/.*
 
 [include]
 .*/src/**/*.js

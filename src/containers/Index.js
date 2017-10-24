@@ -210,8 +210,8 @@ class Index extends Component {
     if (requestCount === 0) {
       this.props.onSetPayments(
         payments.get('payments'),
-        payments.get('share'),
-        payments.get('totalAmount')
+        Number(payments.get('share')),
+        Number(payments.get('totalAmount'))
       );
     }
   }
