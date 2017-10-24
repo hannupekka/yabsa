@@ -226,5 +226,41 @@ describe('UI', () => {
 
     initialState();
   });
+
+  it('should render properly with >= 768px viewport', () => {
+    cy.visit('/');
+    cy.viewport(768, 500);
+    cy.get('#description').should('have.css', 'width', '704px');
+    cy.get('.person__name').first().should('have.css', 'width', '272px');
+    cy.get('.person__amount').first().should('have.css', 'width', '272px');
+    cy.get('.person__total').first().should('have.css', 'width', '128px');
+    cy.get('#add').first().should('have.css', 'width', '132px');
+    cy.get('#share').first().should('have.css', 'width', '157px');
+    cy.get('#save').first().should('have.css', 'width', '147px');
+  });
+
+  it('should render properly with < 768px viewport', () => {
+    cy.visit('/');
+    cy.viewport(700, 500);
+    cy.get('#description').should('have.css', 'width', '668px');
+    cy.get('.person__name').first().should('have.css', 'width', '668px');
+    cy.get('.person__amount').first().should('have.css', 'width', '668px');
+    cy.get('.person__total').first().should('have.css', 'width', '668px');
+    cy.get('#add').first().should('have.css', 'width', '132px');
+    cy.get('#share').first().should('have.css', 'width', '157px');
+    cy.get('#save').first().should('have.css', 'width', '147px');
+  });
+
+  it('should render properly with < 640px viewport', () => {
+    cy.visit('/');
+    cy.viewport(360, 500);
+    cy.get('#description').should('have.css', 'width', '328px');
+    cy.get('.person__name').first().should('have.css', 'width', '328px');
+    cy.get('.person__amount').first().should('have.css', 'width', '328px');
+    cy.get('.person__total').first().should('have.css', 'width', '328px');
+    cy.get('#add').first().should('have.css', 'width', '328px');
+    cy.get('#share').first().should('have.css', 'width', '328px');
+    cy.get('#save').first().should('have.css', 'width', '328px');
+  });
 });
 
