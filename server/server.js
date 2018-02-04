@@ -4,7 +4,7 @@ const app = require('./app')();
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 // Config
-const PORT = PRODUCTION ? process.env.PORT || 8080 : 5000;
+const PORT = PRODUCTION ? process.env.PORT || 8080 : 5001;
 
 app.listen(PORT, '0.0.0.0', () => {
   // eslint-disable-next-line no-console

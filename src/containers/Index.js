@@ -413,7 +413,8 @@ const mapState = (state: StateType): StateType => ({
   share: state.payment.get('share'),
   totalAmount: state.payment.get('totalAmount'),
   persons: state.person.get('persons'),
-  isValid: state.person.get('persons').every(person => person.get('name') !== '')
+  isValid: state.person.get('persons').every(person => person.get('name') !== '' &&
+    person.get('amount') !== '')
 });
 
 const mapActions = {

@@ -93,7 +93,7 @@ describe('UI', () => {
     cy.server();
     cy.route({
       method: 'POST',
-      url: 'http://localhost:5000/api/bill',
+      url: 'http://localhost:5001/api/bill',
       response: '@sample_bill',
       delay: 2000 // Delay so we can check for notifications that are displayed on requests over 1s
     });
@@ -125,7 +125,7 @@ describe('UI', () => {
     // Mock response.
     cy.fixture('sample_bill.json').as('sample_bill');
     cy.server();
-    cy.route('GET', `http://localhost:5000/api/bill/${bid}`, '@sample_bill');
+    cy.route('GET', `http://localhost:5001/api/bill/${bid}`, '@sample_bill');
 
     cy.visit(`/${bid}`, {
       onBeforeLoad: (win) => {
@@ -173,7 +173,7 @@ describe('UI', () => {
     // Mock response.
     cy.fixture('sample_bill.json').as('sample_bill');
     cy.server();
-    cy.route('GET', `http://localhost:5000/api/bill/${bid}`, '@sample_bill');
+    cy.route('GET', `http://localhost:5001/api/bill/${bid}`, '@sample_bill');
 
     cy.visit(`/${bid}`, {
       onBeforeLoad: (win) => {
@@ -200,7 +200,7 @@ describe('UI', () => {
     cy.server();
     cy.route({
       method: 'DELETE',
-      url: 'http://localhost:5000/api/bill',
+      url: 'http://localhost:5001/api/bill',
       response: { bid },
       delay: 2000 // Delay so we can check for notifications that are displayed on requests over 1s
     });
